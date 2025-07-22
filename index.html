@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="CodeSoftix Virtual Internship Program offers innovative, animated, and engaging learning experiences online." />
+  <meta name="keywords" content="CodeSoftix, Virtual Internship, Online Learning, Internships, Career Growth, Practical Skills" />
+  <title>CodeSoftix | Virtual Internship Program</title>
+  
+  <!-- Tailwind CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet" />
+  <!-- AOS (Animate On Scroll) -->
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+  
+  <style>
+    /* Hamburger Icon Animation */
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 3px;
+      background-color: white;
+      margin: 5px 0;
+      transition: all 0.3s ease-in-out;
+    }
+    .hamburger.active span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+      background-color: #ffd700;
+    }
+    .hamburger.active span:nth-child(2) {
+      opacity: 0;
+    }
+    .hamburger.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(7px, -7px);
+      background-color: #ffd700;
+    }
+
+    /* Pulse Blobs */
+    @keyframes pulse-slow {
+      0%, 100% { transform: scale(1); opacity: 0.4; }
+      50% { transform: scale(1.1); opacity: 0.6; }
+    }
+    .animate-pulse-slow {
+      animation: pulse-slow 6s ease-in-out infinite;
+    }
+
+    /* Floating Animation */
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+    .animate-float {
+      animation: float 4s ease-in-out infinite;
+    }
+
+    /* Canvas Background */
+    #heroCanvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Custom Styles from Original CSS */
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: sans-serif;
+    }
+    #nav-bar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .navbar {
+      background-image: linear-gradient(to left, #333333, #000000);
+      padding: 0 !important;
+    }
+    .navbar-brand img {
+      height: 50px;
+      padding-left: 40px;
+    }
+    .navbar-nav li.nav-item {
+      padding: 0 10px;
+      text-align: center;
+    }
+    .navbar-nav li.nav-item a {
+      color: #fff !important;
+      font-weight: 600;
+    }
+    .navbar-toggler {
+      outline: none !important;
+    }
+    /* About-us Section */
+    #about-us {
+      background: #f8f9fa;
+      padding-bottom: 50px;
+      text-align: center;
+    }
+    #about-us .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    #about-us h1.title {
+      font-size: 30px;
+      margin-bottom: 20px;
+    }
+    #about-us p {
+      font-size: 16px;
+      color: rgb(39, 30, 24);
+      font-weight: 300;
+      line-height: 28px;
+      padding: 10px;
+      text-align: justify;
+    }
+    /* Services Section */
+    #services {
+      padding: 80px 0;
+    }
+    .service-img {
+      width: 200px;
+      margin-top: 20px;
+    }
+    .service-img1 {
+      width: 260px;
+      margin-top: 20px;
+    }
+    .service {
+      padding: 20px;
+    }
+    .services h4 {
+      padding: 5px;
+      margin-top: 25px;
+      text-transform: uppercase;
+      font-size: 30px;
+    }
+    .services p {
+      font-size: 16px;
+      text-align: justify;
+    }
+    /* Internship Section */
+    .internship {
+      width: 80%;
+      margin: auto;
+      text-align: center;
+      padding-top: 50px;
+    }
+    h2 {
+      font-size: 36px;
+      font-weight: 600;
+    }
+    p {
+      color: rgb(39, 30, 24);
+      font-size: 18px;
+      font-weight: 300;
+      line-height: 22px;
+      padding: 10px;
+    }
+    h3 {
+      text-align: center;
+      font-weight: 600;
+      margin: 10px 0;
+    }
+    .row {
+      margin-top: 5%;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+    .service-col {
+      flex-basis: calc(45% - 1%);
+      background: #fff;
+      border مسافة: 10px;
+      margin-bottom: 2%;
+      padding: 20px 12px;
+      box-sizing: border-box;
+      right: 5%;
+      margin-right: 0.5%;
+      border: 1px solid #000;
+      text-align: center;
+    }
+    .service-col:last-child {
+      margin-right: 0;
+    }
+    .service-col:hover {
+      box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
+    }
+    .service-col .service-img {
+      width: 120px;
+      margin-top: 20px;
+    }
+    .service-col p {
+      text-align: justify;
+      font-size: 18px;
+    }
+    .apply-button {
+      text-decoration: none;
+      display: block;
+      width: 70%;
+      margin: 15px auto 0;
+      padding: 12px;
+      font-size: 16px;
+      background-color: # Baskar
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .apply-button:hover {
+      background-color: #222;
+    }
+    /* FAQ Section */
+    .faq-section {
+      background-color: #fff;
+      padding: 80px 0;
+    }
+    .faq-container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    h2 {
+      text-align: center;
+      color: #000;
+      margin-bottom: 40px;
+      font-family: 'Roboto', sans-serif;
+    }
+    .accordion {
+      background-color: #000;
+      color: #fff;
+      padding: 15px;
+      width: 100%;
+      text-align: left;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+    .accordion:hover {
+      background-color: #333;
+    }
+    .panel {
+      display: none;
+      background-color: #fff;
+      padding: 15px;
+      border-top: 1px solid #000;
+      color: #000;
+      border-radius: 8px;
+    }
+    .panel p {
+      font-size: 16px;
+      text-align: justify;
+    }
+    .active {
+      display: block;
+    }
+    /* Footer Section */
+    .end-footer {
+      display: block;
+      width: 100%;
+      height: auto;
+      background-image: linear-gradient(to right, #000000, #333333);
+      color: purple;
+      padding: 20px 0;
+    }
+    .end-footer .footer {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+    .end-footer .footer p {
+      color: #fff;
+    }
+    .end-footer .fa {
+      color: #fff;
+    }
+    .icon-hover:hover {
+      opacity: 0.8;
+    }
+    .col-about-head {
+      padding-bottom: 1.5rem;
+    }
+    .img-reduce {
+      width: 25px;
+      height: auto;
+    }
+    .end-footer .col-about,
+    .end-footer .col-support,
+    .end-footer .col-contact {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 20px;
+    }
+    .col-contact p {
+      margin-bottom: 8px;
+    }
+    .end-footer .made-with,
+    .end-footer .copyright {
+      text-align: center;
+      font-size: 20px;
+    }
+    .end-footer .made-with p,
+    .end-footer .copyright p {
+      color: #fff;
+      font-size: 18px;
+    }
+    .end-footer a {
+      text-decoration: none;
+      color: #fff;
+      font-weight: 300;
+      font-size: 16px;
+    }
+    .end-footer .made-with .fab {
+      color: rgb(128, 0, 128);
+      font-size: 20px;
+    }
+    .footer-separator {
+      width: 100%;
+      height: 1px;
+      background-color: #fff;
+      margin: 20px 0;
+    }
+    .end-footer .col-support a::after,
+    .end-footer .col-contact a::after {
+      content: '';
+      width: 0%;
+      height: 1.5px;
+      background: rgb(128, 0, 128);
+      display: block;
+      margin: auto;
+    }
+    .end-footer .col-support a:hover::after,
+    .end-footer .col-contact a:hover::after {
+      width: 100%;
+      transition: 0.7s;
+    }
+    /* Responsive Adjustments */
+    @media screen and (max-width: 768px) {
+      .promo-title {
+        font-size: 30px;
+        margin-top: 10px;
+      }
+      .service-col {
+        flex-basis: calc(100% - 2%);
+        margin-right: 0;
+      }
+      .internship {
+        width: 70%;
+      }
+      .faq-container {
+        padding: 0 10px;
+      }
+      .service-col p {
+        font-size: 16px;
+      }
+      .service-col .service-img {
+        width: 100px;
+        margin-top: 15px;
+      }
+      .apply-button {
+        padding: 12px;
+        font-size: 16px;
+      }
+    }
+    @media screen and (min-width: 768px) {
+      .end-footer .footer {
+        flex-direction: row;
+        align-items: center;
+        padding: 0 20px;
+      }
+      .end-footer .col-about,
+      .end-footer .col-support,
+      .end-footer .col-contact {
+        margin: 0;
+      }
+      .end-footer .col-about {
+        order: 2;
+      }
+      .end-footer .col-support {
+        order: 1;
+      }
+      .end-footer .col-contact {
+        order: 3;
+      }
+    }
+
+
+
+    
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+  </style>
+</head>
+<body class="font-sans antialiased bg-gray-100 text-gray-800 scroll-smooth" style="scroll-padding-top: 64px;">
+
+  <!-- Navigation -->
+  <nav class="fixed top-0 left-0 w-full bg-gradient-to-r from-blue-900 to-indigo-800 text-white shadow-lg z-50">
+    <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+      <a href="#banner" class="flex items-center">
+        <img src="https://cdn-icons-png.flaticon.com/512/3022/3022258.png" alt="CodeSoftix Logo" class="h-12 transition-transform duration-300 hover:scale-110" />
+      </a>
+      <button class="md:hidden focus:outline-none" id="navbar-toggle" aria-label="Toggle navigation menu">
+        <div class="hamburger"><span></span><span></span><span></span></div>
+      </button>
+      <div class="hidden md:flex space-x-6" id="navbar-menu">
+        <a href="#banner" class="hover:text-yellow-400 font-semibold">Home</a>
+        <a href="#about" class="hover:text-yellow-400 font-semibold">About</a>
+        <a href="#internships" class="hover:text-yellow-400 font-semibold">Internships</a>
+        <a href="#faq" class="hover:text-yellow-400 font-semibold">FAQ</a>
+      </div>
+    </div>
+    <div class="fixed top-16 right-0 w-3/4 max-w-xs bg-indigo-900 text-white hidden" id="mobile-menu">
+      <div class="flex flex-col space-y-4 py-6 px-4">
+        <a href="#banner" class="text-center hover:text-yellow-400 font-semibold">Home</a>
+        <a href="#about" class="text-center hover:text-yellow-400 font-semibold">About</a>
+        <a href="#internships" class="text-center hover:text-yellow-400 font-semibold">Internships</a>
+        <a href="#faq" class="text-center hover:text-yellow-400 font-semibold">FAQ</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+ <section id="banner" class="relative min-h-screen flex items-center bg-gradient-to-br from-blue-900 via-indigo-800 to-black text-white overflow-hidden">
+  <!-- Dynamic Animated Background -->
+  <div class="absolute inset-0 z-0">
+    <canvas id="heroCanvas" class="w-full h-full"></canvas>
+    <div class="absolute inset-0 bg-gradient-to-br from-blue-900/50 to-black/50"></div>
+  </div>
+
+  <!-- Decorative Animated Elements -->
+  <div class="absolute top-20 left-20 w-32 h-32 bg-yellow-400 opacity-15 rounded-full animate-pulse-slow"></div>
+  <div class="absolute bottom-20 right-20 w-48 h-48 bg-purple-500 opacity-10 rounded-full animate-pulse-slow delay-1000"></div>
+  <div class="absolute top-1/3 right-1/4 w-24 h-24 bg-pink-400 opacity-20 rounded-full animate-float"></div>
+
+  <!-- Main Content Container -->
+  <div class="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12 flex flex-col md:flex-row items-center justify-between">
+    
+    <!-- Left Content -->
+    <div class="w-full md:w-1/2 text-center md:text-left" data-aos="fade-right" data-aos-duration="1000">
+      <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-6 leading-tight bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 to-pink-500">
+        Ignite Your Future with CodeSoftix
+      </h1>
+      <p class="text-lg sm:text-xl md:text-2xl mb-8 text-gray-200" data-aos="fade-up" data-aos-delay="200">
+        Embark on a transformative virtual internship journey to master real-world skills.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+        <button class="bg-gradient-to-r from-yellow-400 to-pink-500 text-black px-8 py-4 rounded-full font-semibold hover:from-yellow-500 hover:to-pink-600 transform transition hover:scale-110 shadow-lg hover:shadow-xl">
+          Start Your Journey
+        </button>
+        <button class="border-2 border-yellow-400 text-yellow-400 px-8 py-4 rounded-full font-semibold hover:bg-yellow-400 hover:text-black transition-colors">
+          Learn More
+        </button>
+      </div>
+    </div>
+
+    <!-- Right Image & Icons -->
+    <div class="w-full md:w-1/2 mt-10 md:mt-0 flex justify-center relative" data-aos="zoom-in" data-aos-delay="400">
+      <div class="relative group">
+        <img
+          src="cover/Growth/Wavy_Edu-03_Single-01.png"
+          alt="Online Learning"
+          class="w-64 md:w-96 transform transition-transform group-hover:scale-105 animate-float"
+        />
+        <div class="absolute inset-0 bg-gradient-to-t from-blue-900/50 to-transparent opacity-0 group-hover:opacity-0 transition-opacity rounded-lg"></div>
+        <i class="fas fa-code absolute top-4 left-4 text-yellow-400 text-2xl opacity-0 group-hover:opacity-100 transition-opacity animate-pulse"></i>
+        <i class="fas fa-laptop-code absolute bottom-4 right-4 text-pink-500 text-2xl opacity-0 group-hover:opacity-100 transition-opacity animate-pulse"></i>
+        <i class="fas fa-book-open absolute top-0 right-0 text-blue-400 text-xl opacity-0 group-hover:opacity-100 transition-opacity animate-bounce delay-100"></i>
+        <i class="fas fa-graduation-cap absolute bottom-0 left-0 text-green-400 text-xl opacity-0 group-hover:opacity-100 transition-opacity animate-bounce delay-200"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll Down Chevron - at true bottom -->
+  <a href="#about" class="absolute inset-x-0 bottom-6 text-center text-white animate-bounce z-20">
+    <i class="fas fa-chevron-down text-3xl"></i>
+  </a>
+</section>
+
+
+<!-- About -->
+<section id="about" class="min-h-screen flex items-center justify-center bg-gray-50 py-12" data-aos="fade-up">
+  <div class="container mx-auto px-4 sm:px-6 md:px-8 text-center">
+    <h2 class="text-4xl sm:text-5xl font-bold text-blue-900 mb-8 tracking-tight">Who Are We?</h2>
+    <div class="max-w-3xl mx-auto space-y-6 text-gray-700">
+      <p class="text-lg sm:text-xl leading-relaxed">
+        CodeSoftix is a passionate, education-driven initiative dedicated to empowering students and learners through transformative virtual internship experiences.
+      </p>
+      <p class="text-lg sm:text-xl leading-relaxed">
+        Our mission is to bridge the gap between academic learning and real-world skills by combining expert mentorship, a vibrant community, and hands-on projects. We foster creativity and innovation to help you unlock your full potential.
+      </p>
+      <a href="#internships" class="inline-block bg-gradient-to-r from-yellow-400 to-pink-500 text-black px-8 py-4 rounded-full font-semibold text-lg hover:from-yellow-500 hover:to-pink-600 hover:scale-105 transition-transform duration-300 shadow-md">
+        Explore Internships
+      </a>
+    </div>
+  </div>
+   <a href="#internships" class="absolute bottom-10 left-1/2 transform -translate-x-1/2 text-blue-500 animate-bounce">
+  <i class="fas fa-chevron-down text-3xl"></i>
+</a>
+</section>
+
+
+  <!-- Internships -->
+  <section id="internships" class="py-20 bg-white" data-aos="fade-up">
+    <div class="px-4 sm:px-8 md:px-12 lg:px-20 xl:px-28">
+      <h2 class="text-4xl font-bold text-blue-900 text-center mb-12">Explore Our Internships</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+        <!-- Data Science -->
+        <div class="bg-gray-50 p-6 rounded-xl shadow-lg hover:shadow-2xl transition transform hover:scale-105" data-aos="zoom-in">
+          <img src="https://cdn-icons-png.flaticon.com/512/9790/9790346.png" alt="Data Science" class="w-20 h-20 mx-auto mb-4" />
+          <h3 class="text-2xl font-semibold text-blue-900 mb-2 text-center">Data Science</h3>
+          <p class="text-gray-600 mb-4 text-center">Analyze data, predict trends, and build smart insights.</p>
+          <div class="text-center">
+            <a href="#" class="bg-yellow-400 text-black px-6 py-2 rounded-full font-semibold hover:bg-yellow-500">Apply Now</a>
+          </div>
+        </div>
+        <!-- Web Development -->
+        <div class="bg-gray-50 p-6 rounded-xl shadow-lg hover:shadow-2xl transition transform hover:scale-105" data-aos="zoom-in" data-aos-delay="100">
+          <img src="https://cdn-icons-png.flaticon.com/512/1183/1183672.png" alt="Web Dev" class="w-20 h-20 mx-auto mb-4" />
+          <h3 class="text-2xl font-semibold text-blue-900 mb-2 text-center">Web Development</h3>
+          <p class="text-gray-600 mb-4 text-center">Create responsive and modern websites with full-stack tools.</p>
+          <div class="text-center">
+            <a href="#" class="bg-yellow-400 text-black px-6 py-2 rounded-full font-semibold hover:bg-yellow-500">Apply Now</a>
+          </div>
+        </div>
+        <!-- Cyber Security -->
+        <div class="bg-gray-50 p-6 rounded-xl shadow-lg hover:shadow-2xl transition transform hover:scale-105" data-aos="zoom-in" data-aos-delay="200">
+          <img src="https://cdn-icons-png.flaticon.com/512/6062/6062645.png" alt="Cyber Security" class="w-20 h-20 mx-auto mb-4" />
+          <h3 class="text-2xl font-semibold text-blue-900 mb-2 text-center">Cyber Security</h3>
+          <p class="text-gray-600 mb-4 text-center">Protect networks, data, and systems from cyber threats.</p>
+          <div class="text-center">
+            <a href="#" class="bg-yellow-400 text-black px-6 py-2 rounded-full font-semibold hover:bg-yellow-500">Apply Now</a>
+          </div>
+        </div>
+        <!-- AI & Machine Learning -->
+        <div class="bg-gray-50 p-6 rounded-xl shadow-lg hover:shadow-2xl transition transform hover:scale-105" data-aos="zoom-in">
+          <img src="https://cdn-icons-png.flaticon.com/512/1055/1055687.png" alt="AI & ML" class="w-20 h-20 mx-auto mb-4" />
+          <h3 class="text-2xl font-semibold text-blue-900 mb-2 text-center">AI & ML</h3>
+          <p class="text-gray-600 mb-4 text-center">Explore intelligent systems and machine learning algorithms.</p>
+          <div class="text-center">
+            <a href="#" class="bg-yellow-400 text-black px-6 py-2 rounded-full font-semibold hover:bg-yellow-500">Apply Now</a>
+          </div>
+        </div>
+        <!-- UI/UX Design -->
+        <div class="bg-gray-50 p-6 rounded-xl shadow-lg hover:shadow-2xl transition transform hover:scale-105" data-aos="zoom-in" data-aos-delay="100">
+          <img src="https://cdn-icons-png.flaticon.com/512/6096/6096936.png" alt="UI/UX Design" class="w-20 h-20 mx-auto mb-4" />
+          <h3 class="text-2xl font-semibold text-blue-900 mb-2 text-center">UI/UX Design</h3>
+          <p class="text-gray-600 mb-4 text-center">Design seamless and engaging user interfaces.</p>
+          <div class="text-center">
+            <a href="#" class="bg-yellow-400 text-black px-6 py-2 rounded-full font-semibold hover:bg-yellow-500">Apply Now</a>
+          </div>
+        </div>
+        <!-- Cloud Computing -->
+        <div class="bg-gray-50 p-6 rounded-xl shadow-lg hover:shadow-2xl transition transform hover:scale-105" data-aos="zoom-in" data-aos-delay="200">
+          <img src="https://cdn-icons-png.flaticon.com/512/1006/1006555.png" alt="Cloud Computing" class="w-20 h-20 mx-auto mb-4" />
+          <h3 class="text-2xl font-semibold text-blue-900 mb-2 text-center">Cloud Computing</h3>
+          <p class="text-gray-600 mb-4 text-center">Learn to build and manage scalable cloud apps.</p>
+          <div class="text-center">
+            <a href="#" class="bg-yellow-400 text-black px-6 py-2 rounded-full font-semibold hover:bg-yellow-500">Apply Now</a>
+          </div>
+        </div>
+        <!-- Digital Marketing -->
+        <div class="bg-gray-50 p-6 rounded-xl shadow-lg hover:shadow-2xl transition transform hover:scale-105" data-aos="zoom-in">
+          <img src="https://cdn-icons-png.flaticon.com/512/2920/2920322.png" alt="Digital Marketing" class="w-20 h-20 mx-auto mb-4" />
+          <h3 class="text-2xl font-semibold text-blue-900 mb-2 text-center">Digital Marketing</h3>
+          <p class="text-gray-600 mb-4 text-center">Master online promotion and brand strategy.</p>
+          <div class="text-center">
+            <a href="#" class="bg-yellow-400 text-black px-6 py-2 rounded-full font-semibold hover:bg-yellow-500">Apply Now</a>
+          </div>
+        </div>
+        <!-- Blockchain Development -->
+        <div class="bg-gray-50 p-6 rounded-xl shadow-lg hover:shadow-2xl transition transform hover:scale-105" data-aos="zoom-in" data-aos-delay="100">
+          <img src="https://cdn-icons-png.flaticon.com/512/3616/3616013.png" alt="Blockchain" class="w-20 h-20 mx-auto mb-4" />
+          <h3 class="text-2xl font-semibold text-blue-900 mb-2 text-center">Blockchain</h3>
+          <p class="text-gray-600 mb-4 text-center">Build decentralized apps and smart contracts.</p>
+          <div class="text-center">
+            <a href="#" class="bg-yellow-400 text-black px-6 py-2 rounded-full font-semibold hover:bg-yellow-500">Apply Now</a>
+          </div>
+        </div>
+        <!-- Product Management -->
+        <div class="bg-gray-50 p-6 rounded-xl shadow-lg hover:shadow-2xl transition transform hover:scale-105" data-aos="zoom-in" data-aos-delay="200">
+          <img src="https://cdn-icons-png.flaticon.com/512/1161/1161388.png" alt="Product Management" class="w-20 h-20 mx-auto mb-4" />
+          <h3 class="text-2xl font-semibold text-blue-900 mb-2 text-center">Product Management</h3>
+          <p class="text-gray-600 mb-4 text-center">Lead product life cycles with agile methods.</p>
+          <div class="text-center">
+            <a href="#" class="bg-yellow-400 text-black px-6 py-2 rounded-full font-semibold hover:bg-yellow-500">Apply Now</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="min-h-screen flex items-center justify-center bg-gray-50" data-aos="fade-up">
+    <div class="container mx-auto px-4">
+      <h2 class="text-4xl font-bold text-blue-900 text-center mb-12">FAQs</h2>
+      <div class="max-w-3xl mx-auto space-y-6">
+        <details class="bg-white rounded-lg shadow p-4">
+          <summary class="font-semibold text-blue-900 cursor-pointer">Is this internship free?</summary>
+          <p class="text-gray-600 mt-2">Yes! CodeSoftix Virtual Internship Program is completely free. Only optional documentation or goodies may incur a nominal cost.</p>
+        </details>
+        <details class="bg-white rounded-lg shadow p-4">
+          <summary class="font-semibold text-blue-900 cursor-pointer">How do I apply?</summary>
+          <p class="text-gray-600 mt-2">Choose your desired domain and click on the "Apply Now" button. Fill in your details on the interest form to register.</p>
+        </details>
+        <details class="bg-white rounded-lg shadow p-4">
+          <summary class="font-semibold text-blue-900 cursor-pointer">How long is the program?</summary>
+          <p class="text-gray-600 mt-2">The internship spans approximately one month with 3 learning levels.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gradient-to-r from-gray-900 to-blue-ㅤ900 text-white py-10" data-aos="fade-up">
+    <div class="container mx-auto px-4 text-center">
+      <p class="mb-2">Made with <i class="fa-solid fa-heart text-red-500"></i> by CodeSoftix</p>
+      <p class="mb-2">© 2025 CodeSoftix. All rights reserved.</p>
+      <div class="flex justify-center space-x-4">
+        <a href="#" class="hover:text-yellow-400">Privacy Policy</a>
+        <a href="#" class="hover:text-yellow-400">Terms & Conditions</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script>AOS.init({ once: true });</script>
+  <script>
+    // Navbar Toggle
+    const toggleButton = document.getElementById('navbar-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const hamburger = document.querySelector('.hamburger');
+    toggleButton.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+      hamburger.classList.toggle('active');
+    });
+    mobileMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+        hamburger.classList.remove('active');
+      });
+    });
+
+    // Canvas Particle Animation
+    const canvas = document.getElementById('heroCanvas');
+    const ctx = canvas.getContext('2d');
+    
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const particlesArray = [];
+    const numberOfParticles = 100;
+
+    class Particle {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 5 + 1;
+        this.speedX = Math.random() * 1 - 0.5;
+        this.speedY = Math.random() * 1 - 0.5;
+        this.color = `rgba(255, 255, 255, ${Math.random() * 0.5 + 0.2})`;
+      }
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        if (this.size > 0.2) this.size -= 0.01;
+      }
+      draw() {
+        ctx.fillStyle = this.color;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    function init() {
+      for (let i = 0; i < numberOfParticles; i++) {
+        particlesArray.push(new Particle());
+      }
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = 0; i < particlesArray.length; i++) {
+        particlesArray[i].update();
+        particlesArray[i].draw();
+        if (particlesArray[i].size <= 0.2) {
+          particlesArray.splice(i, 1);
+          i--;
+          particlesArray.push(new Particle());
+        }
+      }
+      requestAnimationFrame(animate);
+    }
+
+    init();
+    animate();
+
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+  </script>
+</body>
+</html>
