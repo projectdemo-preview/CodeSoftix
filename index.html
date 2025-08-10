@@ -3,725 +3,591 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="CodeSoftix Virtual Internship Program offers innovative, animated, and engaging learning experiences online." />
-  <meta name="keywords" content="CodeSoftix, Virtual Internship, Online Learning, Internships, Career Growth, Practical Skills" />
   <title>CodeSoftix | Virtual Internship Program</title>
-  
-  <!-- Tailwind CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
-  <!-- Font Awesome -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet" />
-  <!-- AOS (Animate On Scroll) -->
-  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet" />
-  
+
+  <!-- Tailwind for quick styling -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- AOS (animations) -->
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&family=Montserrat:wght@600;700&family=Inter:wght@800&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+
   <style>
-    /* Hamburger Icon Animation */
-    .hamburger span {
-      display: block;
-      width: 24px;
-      height: 3px;
-      background-color: white;
-      margin: 5px 0;
-      transition: all 0.3s ease-in-out;
+    :root {
+      --accent-1: #6d28d9;
+      --accent-2: #7c3aed;
+      --bg-1: #0f172a;
     }
-    .hamburger.active span:nth-child(1) {
-      transform: rotate(45deg) translate(5px, 5px);
-      background-color: #ffd700;
+    body { font-family: 'Roboto', sans-serif; background: #0f172a; color: #ffffff; }
+
+    /* Hero and full-screen section specific */
+    header.hero, section.full-screen { min-height: 100vh; display: flex; align-items: center; position: relative; overflow: hidden; }
+    .hero-bg, .section-bg { position: absolute; inset: 0; z-index: 0; }
+    .blob { position: absolute; border-radius: 50%; filter: blur(70px); opacity: .8; mix-blend-mode: screen; z-index: 0; }
+    .glass { background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02)); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.08); }
+    .headline { line-height: 1.1; }
+    nav.main-nav { background: linear-gradient(to right, var(--accent-2), #4c1d95); }
+
+    /* Particle canvas */
+    #particleCanvas, #missionParticleCanvas, #servicesParticleCanvas, #internshipsParticleCanvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; }
+
+    /* Card hover enhancements */
+    .card { transition: transform 0.3s ease, box-shadow 0.3s ease; perspective: 1000px; }
+    .card:hover { transform: translateY(-8px) rotateX(4deg) rotateY(4deg); box-shadow: 0 20px 40px rgba(13, 15, 26, 0.4); }
+    .card img { transition: transform 0.3s ease; }
+    .card:hover img { transform: scale(1.1); }
+
+    /* Responsive text sizing */
+    @media (min-width: 768px) {
+      .hero-title, .mission-title { font-size: 3.25rem; }
     }
-    .hamburger.active span:nth-child(2) {
-      opacity: 0;
+    @media (min-width: 1024px) {
+      .hero-title, .mission-title { font-size: 4.25rem; }
     }
-    .hamburger.active span:nth-child(3) {
-      transform: rotate(-45deg) translate(7px, -7px);
-      background-color: #ffd700;
+    @media (max-width: 640px) {
+      .hero-title, .mission-title { font-size: 2.5rem; }
+      .mission-content { padding: 1rem; }
+      .card { padding: 1.5rem; }
+      .card img { width: 80px; }
+      .card h3 { font-size: 1.125rem; }
+      .card p { font-size: 0.875rem; }
     }
 
-    /* Pulse Blobs */
-    @keyframes pulse-slow {
-      0%, 100% { transform: scale(1); opacity: 0.4; }
-      50% { transform: scale(1.1); opacity: 0.6; }
-    }
-    .animate-pulse-slow {
-      animation: pulse-slow 6s ease-in-out infinite;
-    }
+    /* Small visual helpers */
+    .dot-grid { background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.04) 1px, transparent 1px); background-size: 14px 14px; }
 
-    /* Floating Animation */
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-20px); }
-    }
-    .animate-float {
-      animation: float 4s ease-in-out infinite;
-    }
+    /* Section-specific styling */
+    section { position: relative; overflow: hidden; padding: 5rem 1rem; }
+    .section-content { position: relative; z-index: 10; }
+    h2 { color: #ffffff; font-family: 'Montserrat', sans-serif; }
+    p { color: #ffffffcc; }
+    .card { background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.03)); border: 1px solid rgba(255,255,255,0.1); }
+    details { background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.03)); border: 1px solid rgba(255,255,255,0.1); transition: all 0.3s ease; }
+    details[open] { box-shadow: 0 10px 20px rgba(13, 15, 26, 0.3); }
+    summary { color: #ffffff; display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-weight: 500; }
+    summary::-webkit-details-marker { display: none; }
+    summary::after { content: '\f078'; font-family: 'Font Awesome 6 Free'; font-weight: 900; transition: transform 0.3s; }
+    details[open] summary::after { transform: rotate(180deg); }
+    form { background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.03)); }
+    input, select, textarea { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15); color: #ffffff; transition: border-color 0.3s, box-shadow 0.3s; }
+    input:focus, select:focus, textarea:focus { border-color: var(--accent-2); box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.3); }
+    input::placeholder, textarea::placeholder { color: #ffffff80; }
+    .cta-button { background: linear-gradient(90deg, var(--accent-1), var(--accent-2)) !important; transition: transform 0.3s, box-shadow 0.3s; }
+    .cta-button:hover { transform: scale(1.05); box-shadow: 0 8px 16px rgba(124, 58, 237, 0.3); }
 
-    /* Canvas Background */
-    #heroCanvas {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-    }
+    /* Hero Section */
+    .hero-bg { background: linear-gradient(135deg, #0b1020 0%, rgba(56, 16, 114, 0.85) 60%); }
 
-    /* Custom Styles from Original CSS */
-    * {
-      margin: 0;
-      padding: 0;
-    }
-    body {
-      font-family: sans-serif;
-    }
-    #nav-bar {
-      position: sticky;
-      top: 0;
-      z-index: 10;
-    }
-    .navbar {
-      background-image: linear-gradient(to left, #333333, #000000);
-      padding: 0 !important;
-    }
-    .navbar-brand img {
-      height: 50px;
-      padding-left: 40px;
-    }
-    .navbar-nav li.nav-item {
-      padding: 0 10px;
-      text-align: center;
-    }
-    .navbar-nav li.nav-item a {
-      color: #fff !important;
-      font-weight: 600;
-    }
-    .navbar-toggler {
-      outline: none !important;
-    }
-    /* About-us Section */
-    #about-us {
-      background: #f8f9fa;
-      padding-bottom: 50px;
-      text-align: center;
-    }
-    #about-us .container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-    }
-    #about-us h1.title {
-      font-size: 30px;
-      margin-bottom: 20px;
-    }
-    #about-us p {
-      font-size: 16px;
-      color: rgb(39, 30, 24);
-      font-weight: 300;
-      line-height: 28px;
-      padding: 10px;
-      text-align: justify;
-    }
+    /* Our Mission Section */
+    #mission .section-bg { background: linear-gradient(135deg, #1e1b4b 0%, rgba(76, 29, 149, 0.85) 60%); }
+    #mission .blob:nth-child(1) { width: 400px; height: 400px; left: -10%; top: -5%; background: linear-gradient(135deg, #a855f7, #06b6d4); }
+    #mission .blob:nth-child(2) { width: 300px; height: 300px; right: -5%; bottom: 10%; background: linear-gradient(135deg, #ec4899, #f97316); opacity: 0.85; }
+    #mission .mission-content { max-width: 48rem; margin: 0 auto; text-align: center; }
+
     /* Services Section */
-    #services {
-      padding: 80px 0;
-    }
-    .service-img {
-      width: 200px;
-      margin-top: 20px;
-    }
-    .service-img1 {
-      width: 260px;
-      margin-top: 20px;
-    }
-    .service {
-      padding: 20px;
-    }
-    .services h4 {
-      padding: 5px;
-      margin-top: 25px;
-      text-transform: uppercase;
-      font-size: 30px;
-    }
-    .services p {
-      font-size: 16px;
-      text-align: justify;
-    }
-    /* Internship Section */
-    .internship {
-      width: 80%;
-      margin: auto;
-      text-align: center;
-      padding-top: 50px;
-    }
-    h2 {
-      font-size: 36px;
-      font-weight: 600;
-    }
-    p {
-      color: rgb(39, 30, 24);
-      font-size: 18px;
-      font-weight: 300;
-      line-height: 22px;
-      padding: 10px;
-    }
-    h3 {
-      text-align: center;
-      font-weight: 600;
-      margin: 10px 0;
-    }
-    .row {
-      margin-top: 5%;
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      flex-wrap: wrap;
-    }
-    .service-col {
-      flex-basis: calc(45% - 1%);
-      background: #fff;
-      border مسافة: 10px;
-      margin-bottom: 2%;
-      padding: 20px 12px;
-      box-sizing: border-box;
-      right: 5%;
-      margin-right: 0.5%;
-      border: 1px solid #000;
-      text-align: center;
-    }
-    .service-col:last-child {
-      margin-right: 0;
-    }
-    .service-col:hover {
-      box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
-    }
-    .service-col .service-img {
-      width: 120px;
-      margin-top: 20px;
-    }
-    .service-col p {
-      text-align: justify;
-      font-size: 18px;
-    }
-    .apply-button {
-      text-decoration: none;
-      display: block;
-      width: 70%;
-      margin: 15px auto 0;
-      padding: 12px;
-      font-size: 16px;
-      background-color: # Baskar
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    .apply-button:hover {
-      background-color: #222;
-    }
+    #services .section-bg { background: linear-gradient(135deg, #1a2436 0%, rgba(88, 28, 135, 0.85) 60%); }
+    #services .blob:nth-child(1) { width: 450px; height: 450px; right: -8%; top: -8%; background: linear-gradient(135deg, #22d3ee, #8b5cf6); }
+    #services .blob:nth-child(2) { width: 280px; height: 280px; left: 5%; bottom: -10%; background: linear-gradient(135deg, #f59e0b, #ef4444); opacity: 0.9; }
+    #services .card { position: relative; overflow: hidden; }
+    #services .card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, #22d3ee, #8b5cf6); opacity: 0.7; }
+    #services .card:hover::before { opacity: 1; }
+
+    /* Internships Section */
+    #internships .section-bg { background: linear-gradient(135deg, #2e1065 0%, rgba(107, 33, 168, 0.85) 60%); }
+    #internships .blob:nth-child(1) { width: 500px; height: 500px; left: -12%; top: 5%; background: linear-gradient(135deg, #3b82f6, #10b981); }
+    #internships .blob:nth-child(2) { width: 350px; height: 350px; right: -7%; bottom: -5%; background: linear-gradient(135deg, #d946ef, #7c3aed); opacity: 0.8; }
+    #internships .blob:nth-child(3) { width: 200px; height: 200px; left: 10%; top: -10%; background: linear-gradient(135deg, #06b6d4, #a855f7); opacity: 0.7; }
+    #internships .card { position: relative; overflow: hidden; }
+    #internships .card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, #3b82f6, #10b981); opacity: 0.7; }
+    #internships .card:hover::before { opacity: 1; }
+
     /* FAQ Section */
-    .faq-section {
-      background-color: #fff;
-      padding: 80px 0;
-    }
-    .faq-container {
-      max-width: 800px;
-      margin: 0 auto;
-    }
-    h2 {
-      text-align: center;
-      color: #000;
-      margin-bottom: 40px;
-      font-family: 'Roboto', sans-serif;
-    }
-    .accordion {
-      background-color: #000;
-      color: #fff;
-      padding: 15px;
-      width: 100%;
-      text-align: left;
-      border: none;
-      outline: none;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-      border-radius: 8px;
-      margin-bottom: 10px;
-    }
-    .accordion:hover {
-      background-color: #333;
-    }
-    .panel {
-      display: none;
-      background-color: #fff;
-      padding: 15px;
-      border-top: 1px solid #000;
-      color: #000;
-      border-radius: 8px;
-    }
-    .panel p {
-      font-size: 16px;
-      text-align: justify;
-    }
-    .active {
-      display: block;
-    }
-    /* Footer Section */
-    .end-footer {
-      display: block;
-      width: 100%;
-      height: auto;
-      background-image: linear-gradient(to right, #000000, #333333);
-      color: purple;
-      padding: 20px 0;
-    }
-    .end-footer .footer {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      align-items: center;
-      width: 100%;
-    }
-    .end-footer .footer p {
-      color: #fff;
-    }
-    .end-footer .fa {
-      color: #fff;
-    }
-    .icon-hover:hover {
-      opacity: 0.8;
-    }
-    .col-about-head {
-      padding-bottom: 1.5rem;
-    }
-    .img-reduce {
-      width: 25px;
-      height: auto;
-    }
-    .end-footer .col-about,
-    .end-footer .col-support,
-    .end-footer .col-contact {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      margin: 20px;
-    }
-    .col-contact p {
-      margin-bottom: 8px;
-    }
-    .end-footer .made-with,
-    .end-footer .copyright {
-      text-align: center;
-      font-size: 20px;
-    }
-    .end-footer .made-with p,
-    .end-footer .copyright p {
-      color: #fff;
-      font-size: 18px;
-    }
-    .end-footer a {
-      text-decoration: none;
-      color: #fff;
-      font-weight: 300;
-      font-size: 16px;
-    }
-    .end-footer .made-with .fab {
-      color: rgb(128, 0, 128);
-      font-size: 20px;
-    }
-    .footer-separator {
-      width: 100%;
-      height: 1px;
-      background-color: #fff;
-      margin: 20px 0;
-    }
-    .end-footer .col-support a::after,
-    .end-footer .col-contact a::after {
-      content: '';
-      width: 0%;
-      height: 1.5px;
-      background: rgb(128, 0, 128);
-      display: block;
-      margin: auto;
-    }
-    .end-footer .col-support a:hover::after,
-    .end-footer .col-contact a:hover::after {
-      width: 100%;
-      transition: 0.7s;
-    }
-    /* Responsive Adjustments */
-    @media screen and (max-width: 768px) {
-      .promo-title {
-        font-size: 30px;
-        margin-top: 10px;
-      }
-      .service-col {
-        flex-basis: calc(100% - 2%);
-        margin-right: 0;
-      }
-      .internship {
-        width: 70%;
-      }
-      .faq-container {
-        padding: 0 10px;
-      }
-      .service-col p {
-        font-size: 16px;
-      }
-      .service-col .service-img {
-        width: 100px;
-        margin-top: 15px;
-      }
-      .apply-button {
-        padding: 12px;
-        font-size: 16px;
-      }
-    }
-    @media screen and (min-width: 768px) {
-      .end-footer .footer {
-        flex-direction: row;
-        align-items: center;
-        padding: 0 20px;
-      }
-      .end-footer .col-about,
-      .end-footer .col-support,
-      .end-footer .col-contact {
-        margin: 0;
-      }
-      .end-footer .col-about {
-        order: 2;
-      }
-      .end-footer .col-support {
-        order: 1;
-      }
-      .end-footer .col-contact {
-        order: 3;
-      }
-    }
+    #faq .section-bg { background: linear-gradient(135deg, #1f2937 0%, rgba(124, 58, 237, 0.85) 60%); }
+    #faq .blob:nth-child(1) { width: 420px; height: 420px; right: -10%; top: -5%; background: linear-gradient(135deg, #8b5cf6, #22d3ee); }
+    #faq .blob:nth-child(2) { width: 320px; height: 320px; left: -5%; bottom: 5%; background: linear-gradient(135deg, #ec4899, #f97316); opacity: 0.85; }
 
-
-
-    
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-.animate-float {
-  animation: float 3s ease-in-out infinite;
-}
-
+    /* Apply Section */
+    #apply .section-bg { background: linear-gradient(135deg, #3c0764 0%, rgba(147, 51, 234, 0.85) 60%); }
+    #apply .blob:nth-child(1) { width: 460px; height: 460px; left: -8%; top: -8%; background: linear-gradient(135deg, #10b981, #3b82f6); }
+    #apply .blob:nth-child(2) { width: 340px; height: 340px; right: -6%; bottom: -6%; background: linear-gradient(135deg, #f59e0b, #d946ef); opacity: 0.9; }
+    #apply .form-group { position: relative; }
+    #apply label { position: absolute; top: -0.5rem; left: 0.75rem; background: var(--bg-1); padding: 0 0.25rem; font-size: 0.75rem; color: #ffffffcc; transition: all 0.2s ease; }
+    #apply input:focus + label, #apply select:focus + label, #apply textarea:focus + label,
+    #apply input:not(:placeholder-shown) + label, #apply select:not(:placeholder-shown) + label, #apply textarea:not(:placeholder-shown) + label {
+      top: -1.25rem; font-size: 0.65rem; color: var(--accent-2);
+    }
   </style>
 </head>
-<body class="font-sans antialiased bg-gray-100 text-gray-800 scroll-smooth" style="scroll-padding-top: 64px;">
+<body class="antialiased">
 
-  <!-- Navigation -->
-  <nav class="fixed top-0 left-0 w-full bg-gradient-to-r from-blue-900 to-indigo-800 text-white shadow-lg z-50">
-    <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-      <a href="#banner" class="flex items-center">
-        <img src="https://cdn-icons-png.flaticon.com/512/3022/3022258.png" alt="CodeSoftix Logo" class="h-12 transition-transform duration-300 hover:scale-110" />
-      </a>
-      <button class="md:hidden focus:outline-none" id="navbar-toggle" aria-label="Toggle navigation menu">
-        <div class="hamburger"><span></span><span></span><span></span></div>
-      </button>
-      <div class="hidden md:flex space-x-6" id="navbar-menu">
-        <a href="#banner" class="hover:text-yellow-400 font-semibold">Home</a>
-        <a href="#about" class="hover:text-yellow-400 font-semibold">About</a>
-        <a href="#internships" class="hover:text-yellow-400 font-semibold">Internships</a>
-        <a href="#faq" class="hover:text-yellow-400 font-semibold">FAQ</a>
+  <!-- NAV -->
+  <nav class="main-nav fixed w-full z-50 shadow-md">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+      <a href="#hero" class="text-white text-2xl font-bold">CodeSoftix</a>
+      <div class="hidden md:flex space-x-8">
+        <a href="#hero" class="text-white hover:text-purple-200">Home</a>
+        <a href="#mission" class="text-white hover:text-purple-200">Mission</a>
+        <a href="#services" class="text-white hover:text-purple-200">Services</a>
+        <a href="#internships" class="text-white hover:text-purple-200">Internships</a>
+        <a href="#faq" class="text-white hover:text-purple-200">FAQ</a>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="#apply" class="hidden md:inline-block bg-white text-purple-800 px-4 py-2 rounded-md font-semibold">Apply</a>
+        <button id="menu-toggle" class="md:hidden text-white focus:outline-none"><i class="fas fa-bars text-2xl"></i></button>
       </div>
     </div>
-    <div class="fixed top-16 right-0 w-3/4 max-w-xs bg-indigo-900 text-white hidden" id="mobile-menu">
-      <div class="flex flex-col space-y-4 py-6 px-4">
-        <a href="#banner" class="text-center hover:text-yellow-400 font-semibold">Home</a>
-        <a href="#about" class="text-center hover:text-yellow-400 font-semibold">About</a>
-        <a href="#internships" class="text-center hover:text-yellow-400 font-semibold">Internships</a>
-        <a href="#faq" class="text-center hover:text-yellow-400 font-semibold">FAQ</a>
-      </div>
+    <div id="mobile-menu" class="hidden md:hidden bg-purple-800 px-4 py-2">
+      <a href="#hero" class="block text-white py-2">Home</a>
+      <a href="#mission" class="block text-white py-2">Mission</a>
+      <a href="#services" class="block text-white py-2">Services</a>
+      <a href="#internships" class="block text-white py-2">Internships</a>
+      <a href="#faq" class="block text-white py-2">FAQ</a>
     </div>
   </nav>
 
-  <!-- Hero Section -->
- <section id="banner" class="relative min-h-screen flex items-center bg-gradient-to-br from-blue-900 via-indigo-800 to-black text-white overflow-hidden">
-  <!-- Dynamic Animated Background -->
-  <div class="absolute inset-0 z-0">
-    <canvas id="heroCanvas" class="w-full h-full"></canvas>
-    <div class="absolute inset-0 bg-gradient-to-br from-blue-900/50 to-black/50"></div>
-  </div>
-
-  <!-- Decorative Animated Elements -->
-  <div class="absolute top-20 left-20 w-32 h-32 bg-yellow-400 opacity-15 rounded-full animate-pulse-slow"></div>
-  <div class="absolute bottom-20 right-20 w-48 h-48 bg-purple-500 opacity-10 rounded-full animate-pulse-slow delay-1000"></div>
-  <div class="absolute top-1/3 right-1/4 w-24 h-24 bg-pink-400 opacity-20 rounded-full animate-float"></div>
-
-  <!-- Main Content Container -->
-  <div class="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12 flex flex-col md:flex-row items-center justify-between">
-    
-    <!-- Left Content -->
-    <div class="w-full md:w-1/2 text-center md:text-left" data-aos="fade-right" data-aos-duration="1000">
-      <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-6 leading-tight bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 to-pink-500">
-        Ignite Your Future with CodeSoftix
-      </h1>
-      <p class="text-lg sm:text-xl md:text-2xl mb-8 text-gray-200" data-aos="fade-up" data-aos-delay="200">
-        Embark on a transformative virtual internship journey to master real-world skills.
-      </p>
-      <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-        <button href="https://docs.google.com/forms/d/1b10KNX1L6L6aZL2akUmEkw4G55ZxADjhPy7GhRUVOdg/edit?pli=1" class="bg-gradient-to-r from-yellow-400 to-pink-500 text-black px-8 py-4 rounded-full font-semibold hover:from-yellow-500 hover:to-pink-600 transform transition hover:scale-110 shadow-lg hover:shadow-xl">
-          Start Your Journey
-        </button>
-        <button class="border-2 border-yellow-400 text-yellow-400 px-8 py-4 rounded-full font-semibold hover:bg-yellow-400 hover:text-black transition-colors">
-          Learn More
-        </button>
+  <!-- HERO -->
+  <header id="hero" class="hero pt-20">
+    <div class="hero-bg"></div>
+    <div class="blob" style="width:480px;height:480px;left:-8%;top:-10%;background:linear-gradient(135deg,#7c3aed,#06b6d4);"></div>
+    <div class="blob" style="width:360px;height:360px;right:-6%;top:8%;background:linear-gradient(135deg,#f97316,#ef4444);opacity:0.9;"></div>
+    <div class="blob" style="width:220px;height:220px;left:6%;bottom:-8%;background:linear-gradient(135deg,#06b6d4,#7c3aed);opacity:0.7;"></div>
+    <canvas id="particleCanvas"></canvas>
+    <div class="max-w-7xl mx-auto px-6 relative z-20">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+        <div class="md:col-span-7 lg:col-span-6 text-white">
+          <p class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm bg-white/6 mb-6 glass">Virtual Internship • Cohort open</p>
+          <h1 class="hero-title font-extrabold text-4xl md:text-5xl lg:text-6xl headline">Unlock your potential — <span class="text-transparent bg-clip-text bg-gradient-to-r from-teal-300 to-purple-300">Ship projects that matter.</span></h1>
+          <p class="mt-6 max-w-2xl text-lg text-white/90">CodeSoftix offers mentor-led virtual internships with hands-on projects in Web, AI, Cloud, Design and more — build your portfolio, get weekly feedback, and earn certificates.</p>
+          <div class="mt-8 flex flex-wrap gap-4 items-center">
+            <a href="#internships" class="inline-flex items-center gap-3 px-6 py-3 rounded-lg font-semibold glass hover:scale-[1.02] transition">Apply Now</a>
+            <a href="#mission" class="text-sm px-4 py-2 rounded-lg bg-white/6 hover:bg-white/8 transition">Learn more</a>
+            <div class="hidden sm:flex items-center gap-3 ml-2 text-sm text-white/90">
+              <span class="inline-block w-8 h-8 rounded-full bg-white/6 flex items-center justify-center">★</span>
+              <div>
+                <div class="text-xs">Trusted by</div>
+                <div class="text-sm font-semibold">300+ learners</div>
+              </div>
+            </div>
+          </div>
+          <ul class="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-white/85">
+            <li class="flex items-start gap-3"><svg class="w-5 h-5 mt-1 text-teal-300" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> Mentor-led projects</li>
+            <li class="flex items-start gap-3"><svg class="w-5 h-5 mt-1 text-pink-300" viewBox="0 0 24 24" fill="none"><path d="M12 2v6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> Weekly code reviews</li>
+            <li class="flex items-start gap-3"><svg class="w-5 h-5 mt-1 text-indigo-300" viewBox="0 0 24 24" fill="none"><path d="M3 12h18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> Portfolio-ready deliverables</li>
+            <li class="flex items-start gap-3"><svg class="w-5 h-5 mt-1 text-yellow-300" viewBox="0 0 24 24" fill="none"><path d="M12 5v14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> Certificate & badges</li>
+          </ul>
+        </div>
+        <div class="md:col-span-5 lg:col-span-6 relative">
+          <div class="relative mx-auto max-w-md sm:max-w-lg">
+            <div class="absolute inset-0 -translate-y-6 -translate-x-6 opacity-30">
+              <div class="dot-grid w-full h-full rounded-2xl"></div>
+            </div>
+            <div class="relative glass rounded-2xl p-6 shadow-2xl overflow-hidden" style="border: 1px solid rgba(255,255,255,0.06);">
+              <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center gap-2">
+                  <span class="w-2 h-2 rounded-full bg-red-400"></span>
+                  <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+                  <span class="w-2 h-2 rounded-full bg-green-400"></span>
+                </div>
+                <div class="text-xs text-white/80">Preview</div>
+              </div>
+              <div class="rounded-lg overflow-hidden bg-gradient-to-br from-slate-800 to-slate-900 p-4">
+                <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt="Project preview" class="rounded-lg w-full object-cover shadow-inner" />
+              </div>
+            </div>
+            <div class="absolute -right-8 -bottom-6 bg-white/6 px-3 py-2 rounded-xl text-xs glass text-white shadow-lg">Live demo • 3.2k views</div>
+          </div>
+        </div>
       </div>
     </div>
+  </header>
 
-    <!-- Right Image & Icons -->
-    <div class="w-full md:w-1/2 mt-10 md:mt-0 flex justify-center relative" data-aos="zoom-in" data-aos-delay="400">
-      <div class="relative group">
-        <img
-          src="cover/Growth/Wavy_Edu-03_Single-01.png"
-          alt="Online Learning"
-          class="w-64 md:w-96 transform transition-transform group-hover:scale-105 animate-float"
-        />
-        <div class="absolute inset-0 bg-gradient-to-t from-blue-900/50 to-transparent opacity-0 group-hover:opacity-0 transition-opacity rounded-lg"></div>
-        <i class="fas fa-code absolute top-4 left-4 text-yellow-400 text-2xl opacity-0 group-hover:opacity-100 transition-opacity animate-pulse"></i>
-        <i class="fas fa-laptop-code absolute bottom-4 right-4 text-pink-500 text-2xl opacity-0 group-hover:opacity-100 transition-opacity animate-pulse"></i>
-        <i class="fas fa-book-open absolute top-0 right-0 text-blue-400 text-xl opacity-0 group-hover:opacity-100 transition-opacity animate-bounce delay-100"></i>
-        <i class="fas fa-graduation-cap absolute bottom-0 left-0 text-green-400 text-xl opacity-0 group-hover:opacity-100 transition-opacity animate-bounce delay-200"></i>
+  <!-- OUR MISSION -->
+  <section id="mission" class="full-screen">
+    <div class="section-bg"></div>
+    <div class="blob"></div>
+    <div class="blob"></div>
+    <canvas id="missionParticleCanvas"></canvas>
+    <div class="section-content max-w-7xl mx-auto px-6 mission-content">
+      <p class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm bg-white/6 mb-6 glass" data-aos="fade-up">Our Mission</p>
+      <h2 class="mission-title font-extrabold text-4xl md:text-5xl lg:text-6xl headline" data-aos="fade-up" data-aos-delay="100">Empowering <span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-300 to-indigo-300">Future Innovators</span></h2>
+      <p class="mt-6 max-w-2xl mx-auto text-lg text-white/90 glass p-6 rounded-lg" data-aos="fade-up" data-aos-delay="200">At CodeSoftix, we are committed to bridging the gap between education and industry by providing hands-on, mentor-led virtual internships that empower learners to build real-world skills and create impactful projects.</p>
+      <div class="mt-8 flex justify-center gap-4" data-aos="fade-up" data-aos-delay="300">
+        <a href="#internships" class="inline-flex items-center gap-3 px-6 py-3 rounded-lg font-semibold glass hover:scale-[1.02] transition">Join Us</a>
+        <a href="#services" class="text-sm px-4 py-2 rounded-lg bg-white/6 hover:bg-white/8 transition">Explore Services</a>
       </div>
     </div>
-  </div>
+  </section>
 
-  <!-- Scroll Down Chevron - at true bottom -->
-  <a href="#about" class="absolute inset-x-0 bottom-6 text-center text-white animate-bounce z-20">
-    <i class="fas fa-chevron-down text-3xl"></i>
-  </a>
-</section>
-
-
-<!-- About -->
-<section id="about" class="min-h-screen flex items-center justify-center bg-gray-50 py-12" data-aos="fade-up">
-  <div class="container mx-auto px-4 sm:px-6 md:px-8 text-center">
-    <h2 class="text-4xl sm:text-5xl font-bold text-blue-900 mb-8 tracking-tight">Who Are We?</h2>
-    <div class="max-w-3xl mx-auto space-y-6 text-gray-700">
-      <p class="text-lg sm:text-xl leading-relaxed">
-        CodeSoftix is a passionate, education-driven initiative dedicated to empowering students and learners through transformative virtual internship experiences.
-      </p>
-      <p class="text-lg sm:text-xl leading-relaxed">
-        Our mission is to bridge the gap between academic learning and real-world skills by combining expert mentorship, a vibrant community, and hands-on projects. We foster creativity and innovation to help you unlock your full potential.
-      </p>
-      <a href="#internships" class="inline-block bg-gradient-to-r from-yellow-400 to-pink-500 text-black px-8 py-4 rounded-full font-semibold text-lg hover:from-yellow-500 hover:to-pink-600 hover:scale-105 transition-transform duration-300 shadow-md">
-        Explore Internships
-      </a>
+  <!-- SERVICES -->
+  <section id="services" class="py-20">
+    <div class="section-bg"></div>
+    <div class="blob"></div>
+    <div class="blob"></div>
+    <canvas id="servicesParticleCanvas"></canvas>
+    <div class="section-content max-w-7xl mx-auto px-4">
+      <h2 class="text-4xl font-bold text-center mb-12" data-aos="fade-up">Our Services</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="card glass p-6 rounded-lg shadow-md" data-aos="fade-up" data-aos-delay="100">
+          <img src="https://cdn-icons-png.flaticon.com/512/1183/1183672.png" alt="Web Development" class="w-24 mx-auto mb-4">
+          <h3 class="text-xl font-semibold mb-3 text-center">Web Development</h3>
+          <p class="text-center text-sm">Craft stunning, responsive websites with the latest frameworks and tools.</p>
+        </div>
+        <div class="card glass p-6 rounded-lg shadow-md" data-aos="fade-up" data-aos-delay="200">
+          <img src="https://cdn-icons-png.flaticon.com/512/955/955504.png" alt="App Development" class="w-24 mx-auto mb-4">
+          <h3 class="text-xl font-semibold mb-3 text-center">App Development</h3>
+          <p class="text-center text-sm">Build cross-platform mobile apps that deliver exceptional user experiences.</p>
+        </div>
+        <div class="card glass p-6 rounded-lg shadow-md" data-aos="fade-up" data-aos-delay="300">
+          <img src="https://cdn-icons-png.flaticon.com/512/1833/18337835.png" alt="AI Model Creation" class="w-24 mx-auto mb-4">
+          <h3 class="text-xl font-semibold mb-3 text-center">AI Model Creation</h3>
+          <p class="text-center text-sm">Design and train AI models for intelligent decision-making and automation.</p>
+        </div>
+        <div class="card glass p-6 rounded-lg shadow-md" data-aos="fade-up" data-aos-delay="400">
+          <img src="https://cdn-icons-png.flaticon.com/512/9187/9187650.png" alt="Data Science Development" class="w-24 mx-auto mb-4">
+          <h3 class="text-xl font-semibold mb-3 text-center">Data Science Development</h3>
+          <p class="text-center text-sm">Harness data to uncover insights and drive business intelligence.</p>
+        </div>
+      </div>
+      <div class="text-center mt-12">
+        <a href="#apply" class="cta-button text-white px-8 py-4 rounded-lg font-semibold">Contact Us</a>
+      </div>
     </div>
-  </div>
-   <a href="#internships" class="absolute bottom-10 left-1/2 transform -translate-x-1/2 text-blue-500 animate-bounce">
-  <i class="fas fa-chevron-down text-3xl"></i>
-</a>
-</section>
+  </section>
 
-
-  <!-- Internships -->
-  <section id="internships" class="py-20 bg-white" data-aos="fade-up">
-    <div class="px-4 sm:px-8 md:px-12 lg:px-20 xl:px-28">
-      <h2 class="text-4xl font-bold text-blue-900 text-center mb-12">Explore Our Internships</h2>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
-        <!-- Data Science -->
-        <div class="bg-gray-50 p-6 rounded-xl shadow-lg hover:shadow-2xl transition transform hover:scale-105" data-aos="zoom-in">
-          <img src="https://cdn-icons-png.flaticon.com/512/9790/9790346.png" alt="Data Science" class="w-20 h-20 mx-auto mb-4" />
-          <h3 class="text-2xl font-semibold text-blue-900 mb-2 text-center">Data Science</h3>
-          <p class="text-gray-600 mb-4 text-center">Analyze data, predict trends, and build smart insights.</p>
-          <div class="text-center">
-            <a href="https://docs.google.com/forms/d/1b10KNX1L6L6aZL2akUmEkw4G55ZxADjhPy7GhRUVOdg/edit?pli=1" class="bg-yellow-400 text-black px-6 py-2 rounded-full font-semibold hover:bg-yellow-500">Apply Now</a>
-          </div>
+  <!-- INTERNSHIPS -->
+  <section id="internships" class="py-20">
+    <div class="section-bg"></div>
+    <div class="blob"></div>
+    <div class="blob"></div>
+    <div class="blob"></div>
+    <canvas id="internshipsParticleCanvas"></canvas>
+    <div class="section-content max-w-7xl mx-auto px-4">
+      <h2 class="text-4xl font-bold text-center mb-12" data-aos="fade-up">Internship Opportunities</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="card glass p-6 rounded-lg shadow-md text-center" data-aos="fade-up" data-aos-delay="100">
+          <img src="https://cdn-icons-png.flaticon.com/512/9790/9790346.png" alt="Data Science" class="w-20 mx-auto mb-4">
+          <h3 class="text-lg font-semibold mb-2">Data Science</h3>
+          <p class="text-sm mb-4">Dive into data analysis and machine learning.</p>
+          <a href="#apply" class="inline-block text-white px-6 py-2 rounded-lg font-semibold cta-button">Apply</a>
         </div>
-        <!-- Web Development -->
-        <div class="bg-gray-50 p-6 rounded-xl shadow-lg hover:shadow-2xl transition transform hover:scale-105" data-aos="zoom-in" data-aos-delay="100">
-          <img src="https://cdn-icons-png.flaticon.com/512/1183/1183672.png" alt="Web Dev" class="w-20 h-20 mx-auto mb-4" />
-          <h3 class="text-2xl font-semibold text-blue-900 mb-2 text-center">Web Development</h3>
-          <p class="text-gray-600 mb-4 text-center">Create responsive and modern websites with full-stack tools.</p>
-          <div class="text-center">
-            <a href="#" class="bg-yellow-400 text-black px-6 py-2 rounded-full font-semibold hover:bg-yellow-500">Apply Now</a>
-          </div>
+        <div class="card glass p-6 rounded-lg shadow-md text-center" data-aos="fade-up" data-aos-delay="200">
+          <img src="https://cdn-icons-png.flaticon.com/512/1183/1183672.png" alt="Web Development" class="w-20 mx-auto mb-4">
+          <h3 class="text-lg font-semibold mb-2">Web Development</h3>
+          <p class="text-sm mb-4">Build modern web applications.</p>
+          <a href="#apply" class="inline-block text-white px-6 py-2 rounded-lg font-semibold cta-button">Apply</a>
         </div>
-        <!-- Cyber Security -->
-        <div class="bg-gray-50 p-6 rounded-xl shadow-lg hover:shadow-2xl transition transform hover:scale-105" data-aos="zoom-in" data-aos-delay="200">
-          <img src="https://cdn-icons-png.flaticon.com/512/6062/6062645.png" alt="Cyber Security" class="w-20 h-20 mx-auto mb-4" />
-          <h3 class="text-2xl font-semibold text-blue-900 mb-2 text-center">Cyber Security</h3>
-          <p class="text-gray-600 mb-4 text-center">Protect networks, data, and systems from cyber threats.</p>
-          <div class="text-center">
-            <a href="#" class="bg-yellow-400 text-black px-6 py-2 rounded-full font-semibold hover:bg-yellow-500">Apply Now</a>
-          </div>
+        <div class="card glass p-6 rounded-lg shadow-md text-center" data-aos="fade-up" data-aos-delay="300">
+          <img src="https://cdn-icons-png.flaticon.com/512/6062/6062645.png" alt="Cyber Security" class="w-20 mx-auto mb-4">
+          <h3 class="text-lg font-semibold mb-2">Cyber Security</h3>
+          <p class="text-sm mb-4">Learn to protect digital assets.</p>
+          <a href="#apply" class="inline-block text-white px-6 py-2 rounded-lg font-semibold cta-button">Apply</a>
         </div>
-        <!-- AI & Machine Learning -->
-        <div class="bg-gray-50 p-6 rounded-xl shadow-lg hover:shadow-2xl transition transform hover:scale-105" data-aos="zoom-in">
-          <img src="https://cdn-icons-png.flaticon.com/512/1055/1055687.png" alt="AI & ML" class="w-20 h-20 mx-auto mb-4" />
-          <h3 class="text-2xl font-semibold text-blue-900 mb-2 text-center">AI & ML</h3>
-          <p class="text-gray-600 mb-4 text-center">Explore intelligent systems and machine learning algorithms.</p>
-          <div class="text-center">
-            <a href="#" class="bg-yellow-400 text-black px-6 py-2 rounded-full font-semibold hover:bg-yellow-500">Apply Now</a>
-          </div>
+        <div class="card glass p-6 rounded-lg shadow-md text-center" data-aos="fade-up" data-aos-delay="400">
+          <img src="https://cdn-icons-png.flaticon.com/512/1055/1055687.png" alt="AI & ML" class="w-20 mx-auto mb-4">
+          <h3 class="text-lg font-semibold mb-2">AI & ML</h3>
+          <p class="text-sm mb-4">Explore artificial intelligence.</p>
+          <a href="#apply" class="inline-block text-white px-6 py-2 rounded-lg font-semibold cta-button">Apply</a>
         </div>
-        <!-- UI/UX Design -->
-        <div class="bg-gray-50 p-6 rounded-xl shadow-lg hover:shadow-2xl transition transform hover:scale-105" data-aos="zoom-in" data-aos-delay="100">
-          <img src="https://cdn-icons-png.flaticon.com/512/6096/6096936.png" alt="UI/UX Design" class="w-20 h-20 mx-auto mb-4" />
-          <h3 class="text-2xl font-semibold text-blue-900 mb-2 text-center">UI/UX Design</h3>
-          <p class="text-gray-600 mb-4 text-center">Design seamless and engaging user interfaces.</p>
-          <div class="text-center">
-            <a href="#" class="bg-yellow-400 text-black px-6 py-2 rounded-full font-semibold hover:bg-yellow-500">Apply Now</a>
-          </div>
+        <div class="card glass p-6 rounded-lg shadow-md text-center" data-aos="fade-up" data-aos-delay="500">
+          <img src="https://cdn-icons-png.flaticon.com/512/6096/6096936.png" alt="UI/UX Design" class="w-20 mx-auto mb-4">
+          <h3 class="text-lg font-semibold mb-2">UI/UX Design</h3>
+          <p class="text-sm mb-4">Design user-centric interfaces.</p>
+          <a href="#apply" class="inline-block text-white px-6 py-2 rounded-lg font-semibold cta-button">Apply</a>
         </div>
-        <!-- Cloud Computing -->
-        <div class="bg-gray-50 p-6 rounded-xl shadow-lg hover:shadow-2xl transition transform hover:scale-105" data-aos="zoom-in" data-aos-delay="200">
-          <img src="https://cdn-icons-png.flaticon.com/512/1006/1006555.png" alt="Cloud Computing" class="w-20 h-20 mx-auto mb-4" />
-          <h3 class="text-2xl font-semibold text-blue-900 mb-2 text-center">Cloud Computing</h3>
-          <p class="text-gray-600 mb-4 text-center">Learn to build and manage scalable cloud apps.</p>
-          <div class="text-center">
-            <a href="#" class="bg-yellow-400 text-black px-6 py-2 rounded-full font-semibold hover:bg-yellow-500">Apply Now</a>
-          </div>
+        <div class="card glass p-6 rounded-lg shadow-md text-center" data-aos="fade-up" data-aos-delay="600">
+          <img src="https://cdn-icons-png.flaticon.com/512/1006/1006555.png" alt="Cloud Computing" class="w-20 mx-auto mb-4">
+          <h3 class="text-lg font-semibold mb-2">Cloud Computing</h3>
+          <p class="text-sm mb-4">Master cloud technologies.</p>
+          <a href="#apply" class="inline-block text-white px-6 py-2 rounded-lg font-semibold cta-button">Apply</a>
         </div>
-        <!-- Digital Marketing -->
-        <div class="bg-gray-50 p-6 rounded-xl shadow-lg hover:shadow-2xl transition transform hover:scale-105" data-aos="zoom-in">
-          <img src="https://cdn-icons-png.flaticon.com/512/2920/2920322.png" alt="Digital Marketing" class="w-20 h-20 mx-auto mb-4" />
-          <h3 class="text-2xl font-semibold text-blue-900 mb-2 text-center">Digital Marketing</h3>
-          <p class="text-gray-600 mb-4 text-center">Master online promotion and brand strategy.</p>
-          <div class="text-center">
-            <a href="#" class="bg-yellow-400 text-black px-6 py-2 rounded-full font-semibold hover:bg-yellow-500">Apply Now</a>
-          </div>
+        <div class="card glass p-6 rounded-lg shadow-md text-center" data-aos="fade-up" data-aos-delay="700">
+          <img src="https://cdn-icons-png.flaticon.com/512/2920/2920322.png" alt="Digital Marketing" class="w-20 mx-auto mb-4">
+          <h3 class="text-lg font-semibold mb-2">Digital Marketing</h3>
+          <p class="text-sm mb-4">Strategies for online growth.</p>
+          <a href="#apply" class="inline-block text-white px-6 py-2 rounded-lg font-semibold cta-button">Apply</a>
         </div>
-        <!-- Blockchain Development -->
-        <div class="bg-gray-50 p-6 rounded-xl shadow-lg hover:shadow-2xl transition transform hover:scale-105" data-aos="zoom-in" data-aos-delay="100">
-          <img src="https://cdn-icons-png.flaticon.com/512/3616/3616013.png" alt="Blockchain" class="w-20 h-20 mx-auto mb-4" />
-          <h3 class="text-2xl font-semibold text-blue-900 mb-2 text-center">Blockchain</h3>
-          <p class="text-gray-600 mb-4 text-center">Build decentralized apps and smart contracts.</p>
-          <div class="text-center">
-            <a href="#" class="bg-yellow-400 text-black px-6 py-2 rounded-full font-semibold hover:bg-yellow-500">Apply Now</a>
-          </div>
+        <div class="card glass p-6 rounded-lg shadow-md text-center" data-aos="fade-up" data-aos-delay="800">
+          <img src="https://cdn-icons-png.flaticon.com/512/3616/3616013.png" alt="Blockchain" class="w-20 mx-auto mb-4">
+          <h3 class="text-lg font-semibold mb-2">Blockchain</h3>
+          <p class="text-sm mb-4">Develop decentralized solutions.</p>
+          <a href="#apply" class="inline-block text-white px-6 py-2 rounded-lg font-semibold cta-button">Apply</a>
         </div>
-        <!-- Product Management -->
-        <div class="bg-gray-50 p-6 rounded-xl shadow-lg hover:shadow-2xl transition transform hover:scale-105" data-aos="zoom-in" data-aos-delay="200">
-          <img src="https://cdn-icons-png.flaticon.com/512/1161/1161388.png" alt="Product Management" class="w-20 h-20 mx-auto mb-4" />
-          <h3 class="text-2xl font-semibold text-blue-900 mb-2 text-center">Product Management</h3>
-          <p class="text-gray-600 mb-4 text-center">Lead product life cycles with agile methods.</p>
-          <div class="text-center">
-            <a href="#" class="bg-yellow-400 text-black px-6 py-2 rounded-full font-semibold hover:bg-yellow-500">Apply Now</a>
-          </div>
+        <div class="card glass p-6 rounded-lg shadow-md text-center" data-aos="fade-up" data-aos-delay="900">
+          <img src="https://cdn-icons-png.flaticon.com/512/1161/1161388.png" alt="Product Management" class="w-20 mx-auto mb-4">
+          <h3 class="text-lg font-semibold mb-2">Product Management</h3>
+          <p class="text-sm mb-4">Lead product development cycles.</p>
+          <a href="#apply" class="inline-block text-white px-6 py-2 rounded-lg font-semibold cta-button">Apply</a>
         </div>
       </div>
     </div>
   </section>
 
   <!-- FAQ -->
-  <section id="faq" class="min-h-screen flex items-center justify-center bg-gray-50" data-aos="fade-up">
-    <div class="container mx-auto px-4">
-      <h2 class="text-4xl font-bold text-blue-900 text-center mb-12">FAQs</h2>
-      <div class="max-w-3xl mx-auto space-y-6">
-        <details class="bg-white rounded-lg shadow p-4">
-          <summary class="font-semibold text-blue-900 cursor-pointer">Is this internship free?</summary>
-          <p class="text-gray-600 mt-2">Yes! CodeSoftix Virtual Internship Program is completely free. Only optional documentation or goodies may incur a nominal cost.</p>
+  <section id="faq" class="py-20">
+    <div class="section-bg"></div>
+    <div class="blob"></div>
+    <div class="blob"></div>
+    <div class="section-content max-w-4xl mx-auto px-4">
+      <h2 class="text-4xl font-bold text-center mb-12" data-aos="fade-up">Frequently Asked Questions</h2>
+      <div class="space-y-4">
+        <details class="glass p-5 rounded-lg shadow-md" data-aos="fade-up" data-aos-delay="100">
+          <summary class="font-semibold text-lg"><i class="fas fa-question-circle mr-2 text-purple-300"></i>Is this internship free?</summary>
+          <p class="mt-3 text-white/90">Yes, our virtual internships are free, with optional paid add-ons for certificate verification and 1:1 mentorship.</p>
         </details>
-        <details class="bg-white rounded-lg shadow p-4">
-          <summary class="font-semibold text-blue-900 cursor-pointer">How do I apply?</summary>
-          <p class="text-gray-600 mt-2">Choose your desired domain and click on the "Apply Now" button. Fill in your details on the interest form to register.</p>
+        <details class="glass p-5 rounded-lg shadow-md" data-aos="fade-up" data-aos-delay="200">
+          <summary class="font-semibold text-lg"><i class="fas fa-question-circle mr-2 text-purple-300"></i>How to apply?</summary>
+          <p class="mt-3 text-white/90">Select a domain and fill out the application form. We'll review and send a confirmation with next steps.</p>
         </details>
-        <details class="bg-white rounded-lg shadow p-4">
-          <summary class="font-semibold text-blue-900 cursor-pointer">How long is the program?</summary>
-          <p class="text-gray-600 mt-2">The internship spans approximately one month with 3 learning levels.</p>
+        <details class="glass p-5 rounded-lg shadow-md" data-aos="fade-up" data-aos-delay="300">
+          <summary class="font-semibold text-lg"><i class="fas fa-question-circle mr-2 text-purple-300"></i>Program duration?</summary>
+          <p class="mt-3 text-white/90">Typically one month with bootcamp-style sprints and a final project presentation.</p>
         </details>
       </div>
     </div>
   </section>
 
-  <!-- Footer -->
-  <footer class="bg-gradient-to-r from-gray-900 to-blue-ㅤ900 text-white py-10" data-aos="fade-up">
-    <div class="container mx-auto px-4 text-center">
-      <p class="mb-2">Made with <i class="fa-solid fa-heart text-red-500"></i> by CodeSoftix</p>
-      <p class="mb-2">© 2025 CodeSoftix. All rights reserved.</p>
-      <div class="flex justify-center space-x-4">
-        <a href="#" class="hover:text-yellow-400">Privacy Policy</a>
-        <a href="#" class="hover:text-yellow-400">Terms & Conditions</a>
+  <!-- APPLY -->
+  <section id="apply" class="py-20">
+    <div class="section-bg"></div>
+    <div class="blob"></div>
+    <div class="blob"></div>
+    <div class="section-content max-w-4xl mx-auto px-4">
+      <h2 class="text-4xl font-bold text-center mb-6" data-aos="fade-up">Apply to a Cohort</h2>
+      <p class="text-center mb-8 glass p-4 rounded-lg" data-aos="fade-up" data-aos-delay="100">Fill the quick form and we'll reach out with next steps.</p>
+      <form id="applyForm" class="glass grid grid-cols-1 md:grid-cols-2 gap-6 p-6 rounded-lg shadow-md" data-aos="fade-up" data-aos-delay="200">
+        <div class="form-group">
+          <input type="text" id="name" placeholder=" Enter Full Name" class="p-3 rounded-md w-full" required />
+          <label for="name">Full name *</label>
+        </div>
+        <div class="form-group">
+          <input type="email" id="email" placeholder=" " class="p-3 rounded-md w-full" required />
+          <label for="email">Email *</label>
+        </div>
+        <div class="form-group">
+          <select id="domain" class="p-3 rounded-md w-full">
+            <option value="" disabled selected hidden></option>
+            <option>Web Development</option>
+            <option>AI & ML</option>
+            <option>Data Science</option>
+            <option>Cloud</option>
+            <option>UI/UX</option>
+          </select>
+          <label for="domain">Domain</label>
+        </div>
+        <div class="form-group">
+          <input type="text" id="portfolio" placeholder=" " class="p-3 rounded-md w-full" />
+          <label for="portfolio">Portfolio / GitHub (optional)</label>
+        </div>
+        <div class="form-group md:col-span-2">
+          <textarea id="notes" placeholder=" " class="p-3 rounded-md w-full" rows="4"></textarea>
+          <label for="notes">Tell us a bit about your goals</label>
+        </div>
+        <button type="submit" class="md:col-span-2 text-white px-6 py-3 rounded-md font-semibold cta-button">Submit Application</button>
+      </form>
+      <p id="formMessage" class="text-center mt-4 text-sm text-green-400 glass p-2 rounded-lg" style="display:none;">Thanks! Your application was submitted.</p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="text-white py-8" style="background:linear-gradient(to right,#1f2937,var(--accent-1));">
+    <div class="max-w-7xl mx-auto px-4 text-center">
+      <p>Made with ❤️ by CodeSoftix</p>
+      <p>© 2025 CodeSoftix. All rights reserved.</p>
+      <div class="mt-4 space-x-4">
+        <a href="#" class="hover:text-purple-300">Privacy</a>
+        <a href="#" class="hover:text-purple-300">Terms</a>
       </div>
     </div>
   </footer>
 
-  <!-- Scripts -->
+  <!-- Scripts: AOS, mobile menu, particle canvas, simple form handling -->
   <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-  <script>AOS.init({ once: true });</script>
   <script>
-    // Navbar Toggle
-    const toggleButton = document.getElementById('navbar-toggle');
-    const mobileMenu = document.getElementById('mobile-menu');
-    const hamburger = document.querySelector('.hamburger');
-    toggleButton.addEventListener('click', () => {
-      mobileMenu.classList.toggle('hidden');
-      hamburger.classList.toggle('active');
+    AOS.init({ once: true, duration: 800 });
+
+    // Mobile menu toggle
+    document.getElementById('menu-toggle').addEventListener('click', () => {
+      document.getElementById('mobile-menu').classList.toggle('hidden');
     });
-    mobileMenu.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        mobileMenu.classList.add('hidden');
-        hamburger.classList.remove('active');
+
+    // Particle Canvas Animation for Hero
+    const heroCanvas = document.getElementById('particleCanvas');
+    const heroCtx = heroCanvas.getContext('2d');
+    function resizeHeroCanvas() { 
+      heroCanvas.width = window.innerWidth; 
+      heroCanvas.height = Math.max(window.innerHeight, 600); 
+    }
+    window.addEventListener('resize', resizeHeroCanvas);
+    resizeHeroCanvas();
+
+    const heroParticles = [];
+    const HERO_PARTICLE_COUNT = Math.min(120, Math.floor(window.innerWidth / 8));
+    for (let i = 0; i < HERO_PARTICLE_COUNT; i++) {
+      heroParticles.push({ 
+        x: Math.random() * heroCanvas.width, 
+        y: Math.random() * heroCanvas.height, 
+        r: Math.random() * 2 + 0.6, 
+        speed: Math.random() * 0.6 + 0.2, 
+        alpha: Math.random() * 0.6 + 0.15 
+      });
+    }
+
+    function drawHero() {
+      heroCtx.clearRect(0, 0, heroCanvas.width, heroCanvas.height);
+      heroParticles.forEach(p => {
+        heroCtx.beginPath();
+        heroCtx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        heroCtx.fillStyle = 'rgba(255,255,255,' + p.alpha + ')';
+        heroCtx.fill();
+        p.y -= p.speed;
+        if (p.y < -10) p.y = heroCanvas.height + 10;
+      });
+      requestAnimationFrame(drawHero);
+    }
+    drawHero();
+
+    // Particle Canvas Animation for Mission
+    const missionCanvas = document.getElementById('missionParticleCanvas');
+    const missionCtx = missionCanvas.getContext('2d');
+    function resizeMissionCanvas() { 
+      missionCanvas.width = window.innerWidth; 
+      missionCanvas.height = Math.max(window.innerHeight, 600); 
+    }
+    window.addEventListener('resize', resizeMissionCanvas);
+    resizeMissionCanvas();
+
+    const missionParticles = [];
+    const MISSION_PARTICLE_COUNT = Math.min(100, Math.floor(window.innerWidth / 10));
+    for (let i = 0; i < MISSION_PARTICLE_COUNT; i++) {
+      missionParticles.push({ 
+        x: Math.random() * missionCanvas.width, 
+        y: Math.random() * missionCanvas.height, 
+        r: Math.random() * 1.5 + 0.5, 
+        speed: Math.random() * 0.4 + 0.1, 
+        alpha: Math.random() * 0.5 + 0.1 
+      });
+    }
+
+    function drawMission() {
+      missionCtx.clearRect(0, 0, missionCanvas.width, missionCanvas.height);
+      missionParticles.forEach(p => {
+        missionCtx.beginPath();
+        missionCtx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        missionCtx.fillStyle = 'rgba(255,255,255,' + p.alpha + ')';
+        missionCtx.fill();
+        p.y -= p.speed;
+        if (p.y < -10) p.y = missionCanvas.height + 10;
+      });
+      requestAnimationFrame(drawMission);
+    }
+    drawMission();
+
+    // Particle Canvas Animation for Services
+    const servicesCanvas = document.getElementById('servicesParticleCanvas');
+    const servicesCtx = servicesCanvas.getContext('2d');
+    function resizeServicesCanvas() { 
+      servicesCanvas.width = window.innerWidth; 
+      servicesCanvas.height = servicesCanvas.parentElement.offsetHeight; 
+    }
+    window.addEventListener('resize', resizeServicesCanvas);
+    resizeServicesCanvas();
+
+    const servicesParticles = [];
+    const SERVICES_PARTICLE_COUNT = Math.min(80, Math.floor(window.innerWidth / 12));
+    for (let i = 0; i < SERVICES_PARTICLE_COUNT; i++) {
+      servicesParticles.push({ 
+        x: Math.random() * servicesCanvas.width, 
+        y: Math.random() * servicesCanvas.height, 
+        r: Math.random() * 1.8 + 0.7, 
+        speed: Math.random() * 0.5 + 0.15, 
+        alpha: Math.random() * 0.55 + 0.2 
+      });
+    }
+
+    function drawServices() {
+      servicesCtx.clearRect(0, 0, servicesCanvas.width, servicesCanvas.height);
+      servicesParticles.forEach(p => {
+        servicesCtx.beginPath();
+        servicesCtx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        servicesCtx.fillStyle = 'rgba(255,255,255,' + p.alpha + ')';
+        servicesCtx.fill();
+        p.y -= p.speed;
+        if (p.y < -10) p.y = servicesCanvas.height + 10;
+      });
+      requestAnimationFrame(drawServices);
+    }
+    drawServices();
+
+    // Particle Canvas Animation for Internships
+    const internshipsCanvas = document.getElementById('internshipsParticleCanvas');
+    const internshipsCtx = internshipsCanvas.getContext('2d');
+    function resizeInternshipsCanvas() { 
+      internshipsCanvas.width = window.innerWidth; 
+      internshipsCanvas.height = internshipsCanvas.parentElement.offsetHeight; 
+    }
+    window.addEventListener('resize', resizeInternshipsCanvas);
+    resizeInternshipsCanvas();
+
+    const internshipsParticles = [];
+    const INTERNSHIPS_PARTICLE_COUNT = Math.min(90, Math.floor(window.innerWidth / 10));
+    for (let i = 0; i < INTERNSHIPS_PARTICLE_COUNT; i++) {
+      internshipsParticles.push({ 
+        x: Math.random() * internshipsCanvas.width, 
+        y: Math.random() * internshipsCanvas.height, 
+        r: Math.random() * 1.6 + 0.6, 
+        speed: Math.random() * 0.45 + 0.1, 
+        alpha: Math.random() * 0.5 + 0.15 
+      });
+    }
+
+    function drawInternships() {
+      internshipsCtx.clearRect(0, 0, internshipsCanvas.width, internshipsCanvas.height);
+      internshipsParticles.forEach(p => {
+        internshipsCtx.beginPath();
+        internshipsCtx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        internshipsCtx.fillStyle = 'rgba(255,255,255,' + p.alpha + ')';
+        internshipsCtx.fill();
+        p.y -= p.speed;
+        if (p.y < -10) p.y = internshipsCanvas.height + 10;
+      });
+      requestAnimationFrame(drawInternships);
+    }
+    drawInternships();
+
+    // Parallax for blobs
+    const sections = document.querySelectorAll('section, header.hero');
+    sections.forEach(section => {
+      const blobs = Array.from(section.querySelectorAll('.blob'));
+      section.addEventListener('mousemove', (e) => {
+        const cw = window.innerWidth, ch = section.offsetHeight;
+        const nx = (e.clientX / cw - 0.5) * 40;
+        const ny = (e.clientY / ch - 0.5) * 40;
+        blobs.forEach((b, i) => { 
+          const mul = (i + 1) * 0.8; 
+          b.style.transform = `translate3d(${nx * mul}px, ${ny * mul}px, 0)`; 
+        });
       });
     });
 
-    // Canvas Particle Animation
-    const canvas = document.getElementById('heroCanvas');
-    const ctx = canvas.getContext('2d');
-    
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    const particlesArray = [];
-    const numberOfParticles = 100;
-
-    class Particle {
-      constructor() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
-        this.size = Math.random() * 5 + 1;
-        this.speedX = Math.random() * 1 - 0.5;
-        this.speedY = Math.random() * 1 - 0.5;
-        this.color = `rgba(255, 255, 255, ${Math.random() * 0.5 + 0.2})`;
-      }
-      update() {
-        this.x += this.speedX;
-        this.y += this.speedY;
-        if (this.size > 0.2) this.size -= 0.01;
-      }
-      draw() {
-        ctx.fillStyle = this.color;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fill();
-      }
-    }
-
-    function init() {
-      for (let i = 0; i < numberOfParticles; i++) {
-        particlesArray.push(new Particle());
-      }
-    }
-
-    function animate() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      for (let i = 0; i < particlesArray.length; i++) {
-        particlesArray[i].update();
-        particlesArray[i].draw();
-        if (particlesArray[i].size <= 0.2) {
-          particlesArray.splice(i, 1);
-          i--;
-          particlesArray.push(new Particle());
-        }
-      }
-      requestAnimationFrame(animate);
-    }
-
-    init();
-    animate();
-
-    window.addEventListener('resize', () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+    // Apply form: simple client-side demo (no backend)
+    const form = document.getElementById('applyForm');
+    const msg = document.getElementById('formMessage');
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const data = {
+        name: document.getElementById('name').value,
+        email: document.getElementById('email').value,
+        domain: document.getElementById('domain').value,
+        portfolio: document.getElementById('portfolio').value,
+        notes: document.getElementById('notes').value,
+      };
+      console.log('Application submitted:', data);
+      msg.style.display = 'block';
+      form.reset();
+      setTimeout(() => msg.style.display = 'none', 5000);
     });
   </script>
 </body>
