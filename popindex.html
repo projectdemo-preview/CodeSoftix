@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CodeSoftix | Virtual Internship Program</title>
+
+  <!-- Tailwind for quick styling -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- AOS (animations) -->
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&family=Montserrat:wght@600;700&family=Inter:wght@800&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+
+  <style>
+    :root {
+      --accent-1: #6d28d9;
+      --accent-2: #7c3aed;
+      --bg-1: #0f172a;
+    }
+    body { font-family: 'Roboto', sans-serif; background: #0f172a; color: #ffffff; }
+
+    /* Hero and full-screen section specific */
+    header.hero, section.full-screen { min-height: 100vh; display: flex; align-items: center; position: relative; overflow: hidden; }
+    .hero-bg, .section-bg { position: absolute; inset: 0; z-index: 0; }
+    .blob { position: absolute; border-radius: 50%; filter: blur(70px); opacity: .8; mix-blend-mode: screen; z-index: 0; }
+    .glass { background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02)); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.08); }
+    .headline { line-height: 1.1; }
+    nav.main-nav { background: linear-gradient(to left, var(--accent-1), #26222d); }
+
+    /* Particle canvas */
+    #particleCanvas, #missionParticleCanvas, #servicesParticleCanvas, #internshipsParticleCanvas, #applyParticleCanvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; }
+
+    /* Card hover enhancements */
+    .card { transition: transform 0.3s ease, box-shadow 0.3s ease; perspective: 1000px; }
+    .card:hover { transform: translateY(-8px) rotateX(4deg) rotateY(4deg); box-shadow: 0 20px 40px rgba(13, 15, 26, 0.4); }
+    .card img { transition: transform 0.3s ease; }
+    .card:hover img { transform: scale(1.1); }
+
+    /* Responsive text sizing */
+    @media (min-width: 768px) {
+      .hero-title, .mission-title { font-size: 3.25rem; }
+    }
+    @media (min-width: 1024px) {
+      .hero-title, .mission-title { font-size: 4.25rem; }
+    }
+    @media (max-width: 640px) {
+      .hero-title, .mission-title { font-size: 2.5rem; }
+      .mission-content { padding: 1rem; }
+      .card { padding: 1.5rem; }
+      .card img { width: 80px; }
+      .card h3 { font-size: 1.125rem; }
+      .card p { font-size: 0.875rem; }
+    }
+
+    /* Small visual helpers */
+    .dot-grid { background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.04) 1px, transparent 1px); background-size: 14px 14px; }
+
+    /* Section-specific styling */
+    section { position: relative; overflow: hidden; padding: 5rem 1rem; }
+    .section-content { position: relative; z-index: 10; }
+    h2 { color: #ffffff; font-family: 'Montserrat', sans-serif; }
+    p { color: #ffffffcc; }
+    .card { background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.03)); border: 1px solid rgba(255,255,255,0.1); }
+    details { background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.03)); border: 1px solid rgba(255,255,255,0.1); transition: all 0.3s ease; }
+    details[open] { box-shadow: 0 10px 20px rgba(13, 15, 26, 0.3); }
+    summary { color: #ffffff; display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-weight: 500; }
+    summary::-webkit-details-marker { display: none; }
+    summary::after { content: '\f078'; font-family: 'Font Awesome 6 Free'; font-weight: 900; transition: transform 0.3s; }
+    details[open] summary::after { transform: rotate(180deg); }
+    form { background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.03)); }
+    input, select, textarea { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15); color: #ffffff; transition: border-color 0.3s, box-shadow 0.3s; }
+    input:focus, select:focus, textarea:focus { border-color: var(--accent-2); box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.3); }
+    input::placeholder, textarea::placeholder { color: #ffffff80; }
+    .cta-button { background: linear-gradient(90deg, var(--accent-1), var(--accent-2)) !important; transition: transform 0.3s, box-shadow 0.3s; }
+    .cta-button:hover { transform: scale(1.05); box-shadow: 0 8px 16px rgba(124, 58, 237, 0.3); }
+
+    /* Hero Section */
+    .hero-bg { background: linear-gradient(135deg, #0b1020 0%, rgba(56, 16, 114, 0.85) 60%); }
+
+    /* Our Mission Section */
+    #mission .section-bg { background: linear-gradient(135deg, #1e1b4b 0%, rgba(76, 29, 149, 0.85) 60%); }
+    #mission .blob:nth-child(1) { width: 400px; height: 400px; left: -10%; top: -5%; background: linear-gradient(135deg, #a855f7, #06b6d4); }
+    #mission .blob:nth-child(2) { width: 300px; height: 300px; right: -5%; bottom: 10%; background: linear-gradient(135deg, #ec4899, #f97316); opacity: 0.85; }
+    #mission .mission-content { max-width: 48rem; margin: 0 auto; text-align: center; }
+
+    /* Services Section */
+    #services .section-bg { background: linear-gradient(135deg, #1a2436 0%, rgba(88, 28, 135, 0.85) 60%); }
+    #services .blob:nth-child(1) { width: 450px; height: 450px; right: -8%; top: -8%; background: linear-gradient(135deg, #22d3ee, #8b5cf6); }
+    #services .blob:nth-child(2) { width: 280px; height: 280px; left: 5%; bottom: -10%; background: linear-gradient(135deg, #f59e0b, #ef4444); opacity: 0.9; }
+    #services .card { position: relative; overflow: hidden; }
+    #services .card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, #22d3ee, #8b5cf6); opacity: 0.7; }
+    #services .card:hover::before { opacity: 1; }
+
+    /* Internships Section */
+    #internships .section-bg { background: linear-gradient(135deg, #2e1065 0%, rgba(107, 33, 168, 0.85) 60%); }
+    #internships .blob:nth-child(1) { width: 500px; height: 500px; left: -12%; top: 5%; background: linear-gradient(135deg, #3b82f6, #10b981); }
+    #internships .blob:nth-child(2) { width: 350px; height: 350px; right: -7%; bottom: -5%; background: linear-gradient(135deg, #d946ef, #7c3aed); opacity: 0.8; }
+    #internships .blob:nth-child(3) { width: 200px; height: 200px; left: 10%; top: -10%; background: linear-gradient(135deg, #06b6d4, #a855f7); opacity: 0.7; }
+    #internships .card { position: relative; overflow: hidden; }
+    #internships .card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, #3b82f6, #10b981); opacity: 0.7; }
+    #internships .card:hover::before { opacity: 1; }
+
+    /* FAQ Section */
+    #faq .section-bg { background: linear-gradient(135deg, #1f2937 0%, rgba(124, 58, 237, 0.85) 60%); }
+    #faq .blob:nth-child(1) { width: 420px; height: 420px; right: -10%; top: -5%; background: linear-gradient(135deg, #8b5cf6, #22d3ee); }
+    #faq .blob:nth-child(2) { width: 320px; height: 320px; left: -5%; bottom: 5%; background: linear-gradient(135deg, #ec4899, #f97316); opacity: 0.85; }
+
+    /* Apply Section */
+    #apply .section-bg { background: linear-gradient(135deg, #3c0764 0%, rgba(147, 51, 234, 0.85) 60%); }
+    #apply .blob:nth-child(1) { width: 460px; height: 460px; left: -8%; top: -8%; background: linear-gradient(135deg, #10b981, #3b82f6); }
+    #apply .blob:nth-child(2) { width: 340px; height: 340px; right: -6%; bottom: -6%; background: linear-gradient(135deg, #f59e0b, #d946ef); opacity: 0.9; }
+    #apply .form-group { position: relative; }
+    #apply label { position: absolute; top: -0.5rem; left: 0.75rem; background: var(--bg-1); padding: 0 0.25rem; font-size: 0.75rem; color: #ffffffcc; transition: all 0.2s ease; }
+    #apply input:focus + label, #apply select:focus + label, #apply textarea:focus + label,
+    #apply input:not(:placeholder-shown) + label, #apply select:not(:placeholder-shown) + label, #apply textarea:not(:placeholder-shown) + label {
+      top: -1.25rem; font-size: 0.65rem; color: var(--accent-2);
+    }
+    #apply .form-group i { position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%); color: #ffffff80; transition: color 0.3s; z-index: 10; }
+    #apply input:focus ~ i, #apply select:focus ~ i, #apply textarea:focus ~ i { color: var(--accent-2); }
+
+    /* Popup Styles */
+    #popup { display: none; align-items: center; justify-content: center; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.7); z-index: 60; }
+    #popup .popup-content { max-width: 400px; text-align: center; position: relative; }
+    #popup .close { position: absolute; top: 0.5rem; right: 0.5rem; font-size: 1.5rem; cursor: pointer; color: #ffffff; }
+  </style>
+</head>
+<body class="antialiased">
+
+  <!-- Popup Modal -->
+  <div id="popup">
+    <div class="popup-content glass p-8 rounded-lg shadow-lg">
+      <span class="close">&times;</span>
+      <h2 class="text-2xl font-bold mb-4">Internship Opportunities are Open!</h2>
+      <p class="text-lg">Join our virtual internship program now and unlock your potential.</p>
+     <button class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800">
+<span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent">
+Apply Now
+</span>
+    </div>
+  </div>
+
+  <!-- NAV -->
+  <nav class="main-nav  fixed w-full z-50 shadow-md">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+
+    <img src="logo.png" alt="CodeSoftix Logo" class="h-12 transition-transform duration-300 hover:scale-110" />
+
+      <!-- <a href="#hero" class="text-white text-2xl font-bold">CodeSoftix</a> --> 
+      <div class="hidden md:flex space-x-8">
+        <a href="#hero" class="text-white hover:text-purple-200">Home</a>
+        <a href="#mission" class="text-white hover:text-purple-200">Mission</a>
+        <a href="#services" class="text-white hover:text-purple-200">Services</a>
+        <a href="#internships" class="text-white hover:text-purple-200">Internships</a>
+        <a href="#faq" class="text-white hover:text-purple-200">FAQ</a>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="#apply" class="hidden md:inline-block bg-white text-purple-800 px-4 py-2 rounded-md font-semibold">Apply</a>
+        <button id="menu-toggle" class="md:hidden text-white focus:outline-none"><i class="fas fa-bars text-2xl"></i></button>
+      </div>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden bg-purple-800 px-4 py-2">
+      <a href="#hero" class="block text-white py-2">Home</a>
+      <a href="#mission" class="block text-white py-2">Mission</a>
+      <a href="#services" class="block text-white py-2">Services</a>
+      <a href="#internships" class="block text-white py-2">Internships</a>
+      <a href="#faq" class="block text-white py-2">FAQ</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header id="hero" class="hero pt-20">
+    <div class="hero-bg"></div>
+    <div class="blob" style="width:480px;height:480px;left:-8%;top:-10%;background:linear-gradient(135deg,#7c3aed,#06b6d4);"></div>
+    <div class="blob" style="width:360px;height:360px;right:-6%;top:8%;background:linear-gradient(135deg,#f97316,#ef4444);opacity:0.9;"></div>
+    <div class="blob" style="width:220px;height:220px;left:6%;bottom:-8%;background:linear-gradient(135deg,#06b6d4,#7c3aed);opacity:0.7;"></div>
+    <canvas id="particleCanvas"></canvas>
+    <div class="max-w-7xl mx-auto px-6 relative z-20">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+        <div class="md:col-span-7 lg:col-span-6 text-white">
+          <p class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm bg-white/6 mb-6 glass">Virtual Internship • Cohort open</p>
+          <h1 class="hero-title font-extrabold text-4xl md:text-5xl lg:text-6xl headline">Unlock your potential — <span class="text-transparent bg-clip-text bg-gradient-to-r from-teal-300 to-purple-300">Ship projects that matter.</span></h1>
+          <p class="mt-6 max-w-2xl text-lg text-white/90">CodeSoftix offers mentor-led virtual internships with hands-on projects in Web, AI, Cloud, Design and more — build your portfolio, get weekly feedback, and earn certificates.</p>
+          <div class="mt-8 flex flex-wrap gap-4 items-center">
+            <a href="#internships" class="inline-flex items-center gap-3 px-6 py-3 rounded-lg font-semibold glass hover:scale-[1.02] transition">Apply Now</a>
+            <a href="#mission" class="text-sm px-4 py-2 rounded-lg bg-white/6 hover:bg-white/8 transition">Learn more</a>
+            <div class="hidden sm:flex items-center gap-3 ml-2 text-sm text-white/90">
+              <span class="inline-block w-8 h-8 rounded-full bg-white/6 flex items-center justify-center">★</span>
+              <div>
+                <div class="text-xs">Trusted by</div>
+                <div class="text-sm font-semibold">300+ learners</div>
+              </div>
+            </div>
+          </div>
+          <ul class="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-white/85">
+            <li class="flex items-start gap-3"><svg class="w-5 h-5 mt-1 text-teal-300" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> Mentor-led projects</li>
+            <li class="flex items-start gap-3"><svg class="w-5 h-5 mt-1 text-pink-300" viewBox="0 0 24 24" fill="none"><path d="M12 2v6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> Weekly code reviews</li>
+            <li class="flex items-start gap-3"><svg class="w-5 h-5 mt-1 text-indigo-300" viewBox="0 0 24 24" fill="none"><path d="M3 12h18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> Portfolio-ready deliverables</li>
+            <li class="flex items-start gap-3"><svg class="w-5 h-5 mt-1 text-yellow-300" viewBox="0 0 24 24" fill="none"><path d="M12 5v14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> Certificate & badges</li>
+          </ul>
+        </div>
+        <div class="md:col-span-5 lg:col-span-6 relative">
+          <div class="relative mx-auto max-w-md sm:max-w-lg">
+            <div class="absolute inset-0 -translate-y-6 -translate-x-6 opacity-30">
+              <div class="dot-grid w-full h-full rounded-2xl"></div>
+            </div>
+            <div class="relative glass rounded-2xl p-6 shadow-2xl overflow-hidden" style="border: 1px solid rgba(255,255,255,0.06);">
+              <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center gap-2">
+                  <span class="w-2 h-2 rounded-full bg-red-400"></span>
+                  <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+                  <span class="w-2 h-2 rounded-full bg-green-400"></span>
+                </div>
+                <div class="text-xs text-white/80">Preview</div>
+              </div>
+              <div class="rounded-lg overflow-hidden bg-gradient-to-br from-slate-800 to-slate-900 p-4">
+                <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt="Project preview" class="rounded-lg w-full object-cover shadow-inner" />
+              </div>
+            </div>
+            <div class="absolute -right-8 -bottom-6 bg-white/6 px-3 py-2 rounded-xl text-xs glass text-white shadow-lg">Live demo • 3.2k views</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- OUR MISSION -->
+  <section id="mission" class="full-screen">
+    <div class="section-bg"></div>
+    <div class="blob"></div>
+    <div class="blob"></div>
+    <canvas id="missionParticleCanvas"></canvas>
+    <div class="section-content max-w-7xl mx-auto px-6 mission-content">
+      <p class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm bg-white/6 mb-6 glass" data-aos="fade-up">Our Mission</p>
+      <h2 class="mission-title font-extrabold text-4xl md:text-5xl lg:text-6xl headline" data-aos="fade-up" data-aos-delay="100">Empowering <span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-300 to-indigo-300">Future Innovators</span></h2>
+      <p class="mt-6 max-w-2xl mx-auto text-lg text-white/90 glass p-6 rounded-lg" data-aos="fade-up" data-aos-delay="200">At CodeSoftix, we are committed to bridging the gap between education and industry by providing hands-on, mentor-led virtual internships that empower learners to build real-world skills and create impactful projects.</p>
+      <div class="mt-8 flex justify-center gap-4" data-aos="fade-up" data-aos-delay="300">
+        <a href="#internships" class="inline-flex items-center gap-3 px-6 py-3 rounded-lg font-semibold glass hover:scale-[1.02] transition">Join Us</a>
+        <a href="#services" class="text-sm px-4 py-2 rounded-lg bg-white/6 hover:bg-white/8 transition">Explore Services</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services" class="py-20">
+    <div class="section-bg"></div>
+    <div class="blob"></div>
+    <div class="blob"></div>
+    <canvas id="servicesParticleCanvas"></canvas>
+    <div class="section-content max-w-7xl mx-auto px-4">
+      <h2 class="text-4xl font-bold text-center mb-12" data-aos="fade-up">Our Services</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="card glass p-6 rounded-lg shadow-md" data-aos="fade-up" data-aos-delay="100">
+          <img src="https://cdn-icons-png.flaticon.com/512/1183/1183672.png" alt="Web Development" class="w-24 mx-auto mb-4">
+          <h3 class="text-xl font-semibold mb-3 text-center">Web Development</h3>
+          <p class="text-center text-sm">Craft stunning, responsive websites with the latest frameworks and tools.</p>
+        </div>
+        <div class="card glass p-6 rounded-lg shadow-md" data-aos="fade-up" data-aos-delay="200">
+          <img src="https://cdn-icons-png.flaticon.com/512/955/955504.png" alt="App Development" class="w-24 mx-auto mb-4">
+          <h3 class="text-xl font-semibold mb-3 text-center">App Development</h3>
+          <p class="text-center text-sm">Build cross-platform mobile apps that deliver exceptional user experiences.</p>
+        </div>
+        <div class="card glass p-6 rounded-lg shadow-md" data-aos="fade-up" data-aos-delay="300">
+          <img src="https://cdn-icons-png.flaticon.com/512/1833/18337835.png" alt="AI Model Creation" class="w-24 mx-auto mb-4">
+          <h3 class="text-xl font-semibold mb-3 text-center">AI Model Creation</h3>
+          <p class="text-center text-sm">Design and train AI models for intelligent decision-making and automation.</p>
+        </div>
+        <div class="card glass p-6 rounded-lg shadow-md" data-aos="fade-up" data-aos-delay="400">
+          <img src="https://cdn-icons-png.flaticon.com/512/9187/9187650.png" alt="Data Science Development" class="w-24 mx-auto mb-4">
+          <h3 class="text-xl font-semibold mb-3 text-center">Data Science Development</h3>
+          <p class="text-center text-sm">Harness data to uncover insights and drive business intelligence.</p>
+        </div>
+      </div>
+      <div class="text-center mt-12">
+        <a href="#apply" class="cta-button text-white px-8 py-4 rounded-lg font-semibold">Contact Us</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTERNSHIPS -->
+  <section id="internships" class="py-20">
+    <div class="section-bg"></div>
+    <div class="blob"></div>
+    <div class="blob"></div>
+    <div class="blob"></div>
+    <canvas id="internshipsParticleCanvas"></canvas>
+    <div class="section-content max-w-7xl mx-auto px-4">
+      <h2 class="text-4xl font-bold text-center mb-12" data-aos="fade-up">Internship Opportunities</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="card glass p-6 rounded-lg shadow-md text-center" data-aos="fade-up" data-aos-delay="100">
+          <img src="https://cdn-icons-png.flaticon.com/512/9790/9790346.png" alt="Data Science" class="w-20 mx-auto mb-4">
+          <h3 class="text-lg font-semibold mb-2">Data Science</h3>
+          <p class="text-sm mb-4">Dive into data analysis and machine learning.</p>
+          <a href="#apply" class="inline-block text-white px-6 py-2 rounded-lg font-semibold cta-button">Apply</a>
+        </div>
+        <div class="card glass p-6 rounded-lg shadow-md text-center" data-aos="fade-up" data-aos-delay="200">
+          <img src="https://cdn-icons-png.flaticon.com/512/1183/1183672.png" alt="Web Development" class="w-20 mx-auto mb-4">
+          <h3 class="text-lg font-semibold mb-2">Web Development</h3>
+          <p class="text-sm mb-4">Build modern web applications.</p>
+          <a href="#apply" class="inline-block text-white px-6 py-2 rounded-lg font-semibold cta-button">Apply</a>
+        </div>
+        <div class="card glass p-6 rounded-lg shadow-md text-center" data-aos="fade-up" data-aos-delay="300">
+          <img src="https://cdn-icons-png.flaticon.com/512/6062/6062645.png" alt="Cyber Security" class="w-20 mx-auto mb-4">
+          <h3 class="text-lg font-semibold mb-2">Cyber Security</h3>
+          <p class="text-sm mb-4">Learn to protect digital assets.</p>
+          <a href="#apply" class="inline-block text-white px-6 py-2 rounded-lg font-semibold cta-button">Apply</a>
+        </div>
+        <div class="card glass p-6 rounded-lg shadow-md text-center" data-aos="fade-up" data-aos-delay="400">
+          <img src="https://cdn-icons-png.flaticon.com/512/1055/1055687.png" alt="AI & ML" class="w-20 mx-auto mb-4">
+          <h3 class="text-lg font-semibold mb-2">AI & ML</h3>
+          <p class="text-sm mb-4">Explore artificial intelligence.</p>
+          <a href="#apply" class="inline-block text-white px-6 py-2 rounded-lg font-semibold cta-button">Apply</a>
+        </div>
+        <div class="card glass p-6 rounded-lg shadow-md text-center" data-aos="fade-up" data-aos-delay="500">
+          <img src="https://cdn-icons-png.flaticon.com/512/6096/6096936.png" alt="UI/UX Design" class="w-20 mx-auto mb-4">
+          <h3 class="text-lg font-semibold mb-2">UI/UX Design</h3>
+          <p class="text-sm mb-4">Design user-centric interfaces.</p>
+          <a href="#apply" class="inline-block text-white px-6 py-2 rounded-lg font-semibold cta-button">Apply</a>
+        </div>
+        <div class="card glass p-6 rounded-lg shadow-md text-center" data-aos="fade-up" data-aos-delay="600">
+          <img src="https://cdn-icons-png.flaticon.com/512/1006/1006555.png" alt="Cloud Computing" class="w-20 mx-auto mb-4">
+          <h3 class="text-lg font-semibold mb-2">Cloud Computing</h3>
+          <p class="text-sm mb-4">Master cloud technologies.</p>
+          <a href="#apply" class="inline-block text-white px-6 py-2 rounded-lg font-semibold cta-button">Apply</a>
+        </div>
+        <div class="card glass p-6 rounded-lg shadow-md text-center" data-aos="fade-up" data-aos-delay="700">
+          <img src="https://cdn-icons-png.flaticon.com/512/2920/2920322.png" alt="Digital Marketing" class="w-20 mx-auto mb-4">
+          <h3 class="text-lg font-semibold mb-2">Digital Marketing</h3>
+          <p class="text-sm mb-4">Strategies for online growth.</p>
+          <a href="#apply" class="inline-block text-white px-6 py-2 rounded-lg font-semibold cta-button">Apply</a>
+        </div>
+        <div class="card glass p-6 rounded-lg shadow-md text-center" data-aos="fade-up" data-aos-delay="800">
+          <img src="https://cdn-icons-png.flaticon.com/512/3616/3616013.png" alt="Blockchain" class="w-20 mx-auto mb-4">
+          <h3 class="text-lg font-semibold mb-2">Blockchain</h3>
+          <p class="text-sm mb-4">Develop decentralized solutions.</p>
+          <a href="#apply" class="inline-block text-white px-6 py-2 rounded-lg font-semibold cta-button">Apply</a>
+        </div>
+        <div class="card glass p-6 rounded-lg shadow-md text-center" data-aos="fade-up" data-aos-delay="900">
+          <img src="https://cdn-icons-png.flaticon.com/512/1161/1161388.png" alt="Product Management" class="w-20 mx-auto mb-4">
+          <h3 class="text-lg font-semibold mb-2">Product Management</h3>
+          <p class="text-sm mb-4">Lead product development cycles.</p>
+          <a href="#apply" class="inline-block text-white px-6 py-2 rounded-lg font-semibold cta-button">Apply</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="py-20">
+    <div class="section-bg"></div>
+    <div class="blob"></div>
+    <div class="blob"></div>
+    <div class="section-content max-w-4xl mx-auto px-4">
+      <h2 class="text-4xl font-bold text-center mb-12" data-aos="fade-up">Frequently Asked Questions</h2>
+      <div class="space-y-4">
+        <details class="glass p-5 rounded-lg shadow-md" data-aos="fade-up" data-aos-delay="100">
+          <summary class="font-semibold text-lg"><i class="fas fa-question-circle mr-2 text-purple-300"></i>Is this internship free?</summary>
+          <p class="mt-3 text-white/90">Yes, our virtual internships are free, with optional paid add-ons for certificate verification and 1:1 mentorship.</p>
+        </details>
+        <details class="glass p-5 rounded-lg shadow-md" data-aos="fade-up" data-aos-delay="200">
+          <summary class="font-semibold text-lg"><i class="fas fa-question-circle mr-2 text-purple-300"></i>How to apply?</summary>
+          <p class="mt-3 text-white/90">Select a domain and fill out the application form. We'll review and send a confirmation with next steps.</p>
+        </details>
+        <details class="glass p-5 rounded-lg shadow-md" data-aos="fade-up" data-aos-delay="300">
+          <summary class="font-semibold text-lg"><i class="fas fa-question-circle mr-2 text-purple-300"></i>Program duration?</summary>
+          <p class="mt-3 text-white/90">Typically one month with bootcamp-style sprints and a final project presentation.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- APPLY -->
+  <section id="apply" class="py-20">
+    <div class="section-bg"></div>
+    <div class="blob"></div>
+    <div class="blob"></div>
+    <canvas id="applyParticleCanvas"></canvas>
+    <div class="section-content max-w-4xl mx-auto px-4">
+      <h2 class="text-4xl font-bold text-center mb-6" data-aos="fade-up">Apply to a Cohort</h2>
+      <p class="text-center mb-8 glass p-4 rounded-lg" data-aos="fade-up" data-aos-delay="100">Fill the quick form and we'll reach out with next steps.</p>
+      <form id="applyForm" class="glass grid grid-cols-1 md:grid-cols-2 gap-6 p-6 rounded-lg shadow-md" data-aos="fade-up" data-aos-delay="200">
+        <div class="form-group">
+          <input type="text" id="name" placeholder=" " class="pl-10 p-3 rounded-md w-full" required />
+          <label for="name">Full name *</label>
+          <i class="fas fa-user"></i>
+        </div>
+        <div class="form-group">
+          <input type="email" id="email" placeholder=" " class="pl-10 p-3 rounded-md w-full" required />
+          <label for="email">Email *</label>
+          <i class="fas fa-envelope"></i>
+        </div>
+        <div class="form-group">
+          <select id="domain" class="pl-10 p-3 rounded-md w-full">
+            <option value="" disabled selected hidden></option>
+            <option>Web Development</option>
+            <option>AI & ML</option>
+            <option>Data Science</option>
+            <option>Cloud</option>
+            <option>UI/UX</option>
+          </select>
+          <label for="domain">Domain</label>
+          <i class="fas fa-code"></i>
+        </div>
+        <div class="form-group">
+          <input type="text" id="portfolio" placeholder=" " class="pl-10 p-3 rounded-md w-full" />
+          <label for="portfolio">Portfolio / GitHub (optional)</label>
+          <i class="fas fa-link"></i>
+        </div>
+        <div class="form-group md:col-span-2">
+          <textarea id="notes" placeholder=" " class="pl-10 p-3 rounded-md w-full" rows="4"></textarea>
+          <label for="notes">Tell us a bit about your goals</label>
+          <i class="fas fa-comment-dots"></i>
+        </div>
+        <button type="submit" class="md:col-span-2 text-white px-6 py-3 rounded-md font-semibold cta-button flex items-center justify-center"><i class="fas fa-paper-plane mr-2"></i>Submit Application</button>
+      </form>
+      <p id="formMessage" class="text-center mt-4 text-sm text-green-400 glass p-2 rounded-lg" style="display:none;">Thanks! Your application was submitted.</p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="text-white py-8" style="background:linear-gradient(to right,#1f2937,var(--accent-1));">
+    <div class="max-w-7xl mx-auto px-4 text-center">
+      <p>Made with ❤️ by CodeSoftix</p>
+      <p>© 2025 CodeSoftix. All rights reserved.</p>
+      <div class="mt-4 space-x-4">
+        <a href="#" class="hover:text-purple-300">Privacy</a>
+        <a href="#" class="hover:text-purple-300">Terms</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts: AOS, mobile menu, particle canvas, simple form handling -->
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script>
+    AOS.init({ once: true, duration: 800 });
+
+    // Mobile menu toggle with icon change
+    const menuToggle = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuIcon = menuToggle.querySelector('i');
+
+    menuToggle.addEventListener('click', () => {
+      const isHidden = mobileMenu.classList.contains('hidden');
+      if (isHidden) {
+        mobileMenu.classList.remove('hidden');
+        menuIcon.classList.remove('fa-bars');
+        menuIcon.classList.add('fa-times');
+        console.log('Menu opened');
+      } else {
+        mobileMenu.classList.add('hidden');
+        menuIcon.classList.remove('fa-times');
+        menuIcon.classList.add('fa-bars');
+        console.log('Menu closed');
+      }
+    });
+
+    // Close menu on link click
+    document.querySelectorAll('#mobile-menu a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+        menuIcon.classList.remove('fa-times');
+        menuIcon.classList.add('fa-bars');
+        console.log('Menu closed via link click');
+      });
+    });
+
+    // Particle Canvas Animation for Hero
+    const heroCanvas = document.getElementById('particleCanvas');
+    const heroCtx = heroCanvas.getContext('2d');
+    function resizeHeroCanvas() { 
+      heroCanvas.width = window.innerWidth; 
+      heroCanvas.height = Math.max(window.innerHeight, 600); 
+    }
+    window.addEventListener('resize', resizeHeroCanvas);
+    resizeHeroCanvas();
+
+    const heroParticles = [];
+    const HERO_PARTICLE_COUNT = Math.min(120, Math.floor(window.innerWidth / 8));
+    for (let i = 0; i < HERO_PARTICLE_COUNT; i++) {
+      heroParticles.push({ 
+        x: Math.random() * heroCanvas.width, 
+        y: Math.random() * heroCanvas.height, 
+        r: Math.random() * 2 + 0.6, 
+        speed: Math.random() * 0.6 + 0.2, 
+        alpha: Math.random() * 0.6 + 0.15 
+      });
+    }
+
+    function drawHero() {
+      heroCtx.clearRect(0, 0, heroCanvas.width, heroCanvas.height);
+      heroParticles.forEach(p => {
+        heroCtx.beginPath();
+        heroCtx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        heroCtx.fillStyle = 'rgba(255,255,255,' + p.alpha + ')';
+        heroCtx.fill();
+        p.y -= p.speed;
+        if (p.y < -10) p.y = heroCanvas.height + 10;
+      });
+      requestAnimationFrame(drawHero);
+    }
+    drawHero();
+
+    // Particle Canvas Animation for Mission
+    const missionCanvas = document.getElementById('missionParticleCanvas');
+    const missionCtx = missionCanvas.getContext('2d');
+    function resizeMissionCanvas() { 
+      missionCanvas.width = window.innerWidth; 
+      missionCanvas.height = Math.max(window.innerHeight, 600); 
+    }
+    window.addEventListener('resize', resizeMissionCanvas);
+    resizeMissionCanvas();
+
+    const missionParticles = [];
+    const MISSION_PARTICLE_COUNT = Math.min(100, Math.floor(window.innerWidth / 10));
+    for (let i = 0; i < MISSION_PARTICLE_COUNT; i++) {
+      missionParticles.push({ 
+        x: Math.random() * missionCanvas.width, 
+        y: Math.random() * missionCanvas.height, 
+        r: Math.random() * 1.5 + 0.5, 
+        speed: Math.random() * 0.4 + 0.1, 
+        alpha: Math.random() * 0.5 + 0.1 
+      });
+    }
+
+    function drawMission() {
+      missionCtx.clearRect(0, 0, missionCanvas.width, missionCanvas.height);
+      missionParticles.forEach(p => {
+        missionCtx.beginPath();
+        missionCtx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        missionCtx.fillStyle = 'rgba(255,255,255,' + p.alpha + ')';
+        missionCtx.fill();
+        p.y -= p.speed;
+        if (p.y < -10) p.y = missionCanvas.height + 10;
+      });
+      requestAnimationFrame(drawMission);
+    }
+    drawMission();
+
+    // Particle Canvas Animation for Services
+    const servicesCanvas = document.getElementById('servicesParticleCanvas');
+    const servicesCtx = servicesCanvas.getContext('2d');
+    function resizeServicesCanvas() { 
+      servicesCanvas.width = window.innerWidth; 
+      servicesCanvas.height = servicesCanvas.parentElement.offsetHeight; 
+    }
+    window.addEventListener('resize', resizeServicesCanvas);
+    resizeServicesCanvas();
+
+    const servicesParticles = [];
+    const SERVICES_PARTICLE_COUNT = Math.min(80, Math.floor(window.innerWidth / 12));
+    for (let i = 0; i < SERVICES_PARTICLE_COUNT; i++) {
+      servicesParticles.push({ 
+        x: Math.random() * servicesCanvas.width, 
+        y: Math.random() * servicesCanvas.height, 
+        r: Math.random() * 1.8 + 0.7, 
+        speed: Math.random() * 0.5 + 0.15, 
+        alpha: Math.random() * 0.55 + 0.2 
+      });
+    }
+
+    function drawServices() {
+      servicesCtx.clearRect(0, 0, servicesCanvas.width, servicesCanvas.height);
+      servicesParticles.forEach(p => {
+        servicesCtx.beginPath();
+        servicesCtx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        servicesCtx.fillStyle = 'rgba(255,255,255,' + p.alpha + ')';
+        servicesCtx.fill();
+        p.y -= p.speed;
+        if (p.y < -10) p.y = servicesCanvas.height + 10;
+      });
+      requestAnimationFrame(drawServices);
+    }
+    drawServices();
+
+    // Particle Canvas Animation for Internships
+    const internshipsCanvas = document.getElementById('internshipsParticleCanvas');
+    const internshipsCtx = internshipsCanvas.getContext('2d');
+    function resizeInternshipsCanvas() { 
+      internshipsCanvas.width = window.innerWidth; 
+      internshipsCanvas.height = internshipsCanvas.parentElement.offsetHeight; 
+    }
+    window.addEventListener('resize', resizeInternshipsCanvas);
+    resizeInternshipsCanvas();
+
+    const internshipsParticles = [];
+    const INTERNSHIPS_PARTICLE_COUNT = Math.min(90, Math.floor(window.innerWidth / 10));
+    for (let i = 0; i < INTERNSHIPS_PARTICLE_COUNT; i++) {
+      internshipsParticles.push({ 
+        x: Math.random() * internshipsCanvas.width, 
+        y: Math.random() * internshipsCanvas.height, 
+        r: Math.random() * 1.6 + 0.6, 
+        speed: Math.random() * 0.45 + 0.1, 
+        alpha: Math.random() * 0.5 + 0.15 
+      });
+    }
+
+    function drawInternships() {
+      internshipsCtx.clearRect(0, 0, internshipsCanvas.width, internshipsCanvas.height);
+      internshipsParticles.forEach(p => {
+        internshipsCtx.beginPath();
+        internshipsCtx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        internshipsCtx.fillStyle = 'rgba(255,255,255,' + p.alpha + ')';
+        internshipsCtx.fill();
+        p.y -= p.speed;
+        if (p.y < -10) p.y = internshipsCanvas.height + 10;
+      });
+      requestAnimationFrame(drawInternships);
+    }
+    drawInternships();
+
+    // Particle Canvas Animation for Apply
+    const applyCanvas = document.getElementById('applyParticleCanvas');
+    const applyCtx = applyCanvas.getContext('2d');
+    function resizeApplyCanvas() { 
+      applyCanvas.width = window.innerWidth; 
+      applyCanvas.height = applyCanvas.parentElement.offsetHeight; 
+    }
+    window.addEventListener('resize', resizeApplyCanvas);
+    resizeApplyCanvas();
+
+    const applyParticles = [];
+    const APPLY_PARTICLE_COUNT = Math.min(100, Math.floor(window.innerWidth / 10));
+    for (let i = 0; i < APPLY_PARTICLE_COUNT; i++) {
+      applyParticles.push({ 
+        x: Math.random() * applyCanvas.width, 
+        y: Math.random() * applyCanvas.height, 
+        r: Math.random() * 1.5 + 0.5, 
+        speed: Math.random() * 0.4 + 0.1, 
+        alpha: Math.random() * 0.5 + 0.1 
+      });
+    }
+
+    function drawApply() {
+      applyCtx.clearRect(0, 0, applyCanvas.width, applyCanvas.height);
+      applyParticles.forEach(p => {
+        applyCtx.beginPath();
+        applyCtx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        applyCtx.fillStyle = 'rgba(255,255,255,' + p.alpha + ')';
+        applyCtx.fill();
+        p.y -= p.speed;
+        if (p.y < -10) p.y = applyCanvas.height + 10;
+      });
+      requestAnimationFrame(drawApply);
+    }
+    drawApply();
+
+    // Parallax for blobs
+    const sections = document.querySelectorAll('section, header.hero');
+    sections.forEach(section => {
+      const blobs = Array.from(section.querySelectorAll('.blob'));
+      section.addEventListener('mousemove', (e) => {
+        const cw = window.innerWidth, ch = section.offsetHeight;
+        const nx = (e.clientX / cw - 0.5) * 40;
+        const ny = (e.clientY / ch - 0.5) * 40;
+        blobs.forEach((b, i) => { 
+          const mul = (i + 1) * 0.8; 
+          b.style.transform = `translate3d(${nx * mul}px, ${ny * mul}px, 0)`; 
+        });
+      });
+    });
+
+    // Apply form: simple client-side demo (no backend)
+    const form = document.getElementById('applyForm');
+    const msg = document.getElementById('formMessage');
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const data = {
+        name: document.getElementById('name').value,
+        email: document.getElementById('email').value,
+        domain: document.getElementById('domain').value,
+        portfolio: document.getElementById('portfolio').value,
+        notes: document.getElementById('notes').value,
+      };
+      console.log('Application submitted:', data);
+      msg.style.display = 'block';
+      form.reset();
+      setTimeout(() => msg.style.display = 'none', 5000);
+    });
+
+    // Popup functionality
+    const popup = document.getElementById('popup');
+    const closeBtn = document.querySelector('#popup .close');
+
+    window.addEventListener('load', () => {
+      popup.style.display = 'flex';
+      setTimeout(() => {
+        popup.style.display = 'none';
+      }, 15000);
+    });
+
+    closeBtn.addEventListener('click', () => {
+      popup.style.display = 'none';
+    });
+
+    popup.addEventListener('click', (e) => {
+      if (e.target === popup) {
+        popup.style.display = 'none';
+      }
+    });
+  </script>
+</body>
+</html>
