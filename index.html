@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CodeSoftix | Virtual Internship Program</title>
 
+   <!-- Favicon -->
+  <link rel="icon" type="png" href="codesoftixlogo/WhatsApp_Image_2025-07-18_at_7.58.37_PM-removebg-preview.png" />
+
+
   <!-- Tailwind for quick styling -->
   <script src="https://cdn.tailwindcss.com"></script>
 
@@ -32,7 +36,7 @@
     nav.main-nav { background: linear-gradient(to left, var(--accent-1), #26222d); }
 
     /* Particle canvas */
-    #particleCanvas, #missionParticleCanvas, #servicesParticleCanvas, #internshipsParticleCanvas, #applyParticleCanvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; }
+  #particleCanvas, #missionParticleCanvas, #servicesParticleCanvas, #internshipsParticleCanvas, #applyParticleCanvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; }  
 
     /* Card hover enhancements */
     .card { transition: transform 0.3s ease, box-shadow 0.3s ease; perspective: 1000px; }
@@ -122,7 +126,10 @@
     #apply .form-group i { position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%); color: #ffffff80; transition: color 0.3s; z-index: 10; }
     #apply input:focus ~ i, #apply select:focus ~ i, #apply textarea:focus ~ i { color: var(--accent-2); }
 
-    /* Popup Styles */
+   
+
+
+ /* Popup Styles */
     #popup { display: none; align-items: center; justify-content: center; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.7); z-index: 60; }
     #popup .popup-content { max-width: 400px; text-align: center; position: relative; }
     #popup .close { position: absolute; top: 0.5rem; right: 0.5rem; font-size: 1.5rem; cursor: pointer; color: #ffffff; }
@@ -131,15 +138,18 @@
 <body class="antialiased">
 
   <!-- Popup Modal -->
-  <div id="popup">
+  <div id="popup" class="flex">
     <div class="popup-content glass p-8 rounded-lg shadow-lg">
-      <span class="close">&times;</span>
-      <h2 class="text-2xl font-bold mb-4">Internship Opportunities are Open!</h2>
-      <p class="text-lg">Join our virtual internship program now and unlock your potential.</p>
-     <button class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800">
-<span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent">
-Apply Now
-</span>
+      <!-- Close Button -->
+      <button class="close" onclick="document.getElementById('popup').classList.add('hidden')">
+        &times;
+      </button>
+      <!-- Popup Content -->
+      <h2 class="text-2xl font-bold text-white mb-4">Growth Avenues are Open!</h2>
+      <p class="text-lg text-gray-200 mb-6">Join our virtual internship program now and unlock your potential.</p>
+      <a href="https://forms.office.com/Pages/DesignPageV2.aspx?origin=NeoPortalPage&subpage=design&id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAAN__lyK2ZFUMzY5TllNODI2M0RDTkxHM1NOWTA2UTU5Qi4u&tab=0&analysis=false&topview=Preview"><button class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800">
+        <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent">Apply Now</span>
+      </button> </a>
     </div>
   </div>
 
@@ -154,11 +164,11 @@ Apply Now
         <a href="#hero" class="text-white hover:text-purple-200">Home</a>
         <a href="#mission" class="text-white hover:text-purple-200">Mission</a>
         <a href="#services" class="text-white hover:text-purple-200">Services</a>
-        <a href="#internships" class="text-white hover:text-purple-200">Internships</a>
-        <a href="#faq" class="text-white hover:text-purple-200">FAQ</a>
+        <a href="#internships" class="text-white hover:text-purple-200">Career</a>
+        <a href="#faq" class="text-white hover:text-purple-200">FAQs</a>
       </div>
       <div class="flex items-center gap-4">
-        <a href="#apply" class="hidden md:inline-block bg-white text-purple-800 px-4 py-2 rounded-md font-semibold">Apply</a>
+        <a href="https://forms.office.com/Pages/DesignPageV2.aspx?origin=NeoPortalPage&subpage=design&id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAAN__lyK2ZFUMzY5TllNODI2M0RDTkxHM1NOWTA2UTU5Qi4u&tab=0&analysis=false&topview=Preview" class="hidden md:inline-block bg-white text-purple-800 px-4 py-2 rounded-md font-semibold">Apply</a>
         <button id="menu-toggle" class="md:hidden text-white focus:outline-none"><i class="fas fa-bars text-2xl"></i></button>
       </div>
     </div>
@@ -183,10 +193,10 @@ Apply Now
         <div class="md:col-span-7 lg:col-span-6 text-white">
           <p class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm bg-white/6 mb-6 glass">Virtual Internship • Cohort open</p>
           <h1 class="hero-title font-extrabold text-4xl md:text-5xl lg:text-6xl headline">Unlock your potential — <span class="text-transparent bg-clip-text bg-gradient-to-r from-teal-300 to-purple-300">Ship projects that matter.</span></h1>
-          <p class="mt-6 max-w-2xl text-lg text-white/90">CodeSoftix offers mentor-led virtual internships with hands-on projects in Web, AI, Cloud, Design and more — build your portfolio, get weekly feedback, and earn certificates.</p>
+          <p class="mt-6 max-w-2xl text-lg text-white/90">CodeSoftix offers mentor-led Skill Accelerator Programs in Web,Back-end, Cloud, Design, and more — work on real-world projects, grow your portfolio, get weekly expert feedback, and earn industry-recognized certificates.</p>
           <div class="mt-8 flex flex-wrap gap-4 items-center">
-            <a href="#internships" class="inline-flex items-center gap-3 px-6 py-3 rounded-lg font-semibold glass hover:scale-[1.02] transition">Apply Now</a>
-            <a href="#mission" class="text-sm px-4 py-2 rounded-lg bg-white/6 hover:bg-white/8 transition">Learn more</a>
+            <a href="#internships" class="inline-flex items-center gap-3 px-6 py-3 rounded-lg font-semibold glass hover:scale-[1.02] transition">Get job alerts</a>
+            <a href="#mission" class="text-sm px-4 py-2 rounded-lg bg-white/6 hover:bg-white/8 transition">Learn More</a>
             <div class="hidden sm:flex items-center gap-3 ml-2 text-sm text-white/90">
               <span class="inline-block w-8 h-8 rounded-full bg-white/6 flex items-center justify-center">★</span>
               <div>
@@ -236,7 +246,7 @@ Apply Now
     <div class="section-content max-w-7xl mx-auto px-6 mission-content">
       <p class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm bg-white/6 mb-6 glass" data-aos="fade-up">Our Mission</p>
       <h2 class="mission-title font-extrabold text-4xl md:text-5xl lg:text-6xl headline" data-aos="fade-up" data-aos-delay="100">Empowering <span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-300 to-indigo-300">Future Innovators</span></h2>
-      <p class="mt-6 max-w-2xl mx-auto text-lg text-white/90 glass p-6 rounded-lg" data-aos="fade-up" data-aos-delay="200">At CodeSoftix, we are committed to bridging the gap between education and industry by providing hands-on, mentor-led virtual internships that empower learners to build real-world skills and create impactful projects.</p>
+      <p class="mt-6 max-w-2xl mx-auto text-lg text-white/90 glass p-6 rounded-lg" data-aos="fade-up" data-aos-delay="200">At CodeSoftix, we are dedicated to bridging the gap between academia and industry through hands-on, mentor-guided experiential learning initiatives that equip learners with real-world skills and enable them to create impactful, industry-ready projects.</p>
       <div class="mt-8 flex justify-center gap-4" data-aos="fade-up" data-aos-delay="300">
         <a href="#internships" class="inline-flex items-center gap-3 px-6 py-3 rounded-lg font-semibold glass hover:scale-[1.02] transition">Join Us</a>
         <a href="#services" class="text-sm px-4 py-2 rounded-lg bg-white/6 hover:bg-white/8 transition">Explore Services</a>
@@ -253,23 +263,23 @@ Apply Now
     <div class="section-content max-w-7xl mx-auto px-4">
       <h2 class="text-4xl font-bold text-center mb-12" data-aos="fade-up">Our Services</h2>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div class="card glass p-6 rounded-lg shadow-md" data-aos="fade-up" data-aos-delay="100">
-          <img src="https://cdn-icons-png.flaticon.com/512/1183/1183672.png" alt="Web Development" class="w-24 mx-auto mb-4">
+        <div class="card glass p-6 rounded-lg shadow-md" data-aos="fade-up" data-aos-delay="200">
+         <img src="codesoftixlogo/code.png" alt="web development" class="w-24 mx-auto mb-4">
           <h3 class="text-xl font-semibold mb-3 text-center">Web Development</h3>
           <p class="text-center text-sm">Craft stunning, responsive websites with the latest frameworks and tools.</p>
         </div>
         <div class="card glass p-6 rounded-lg shadow-md" data-aos="fade-up" data-aos-delay="200">
-          <img src="https://cdn-icons-png.flaticon.com/512/955/955504.png" alt="App Development" class="w-24 mx-auto mb-4">
+          <img src="codesoftixlogo/mobile-app.png" alt="App Development" class="w-24 mx-auto mb-4">
           <h3 class="text-xl font-semibold mb-3 text-center">App Development</h3>
           <p class="text-center text-sm">Build cross-platform mobile apps that deliver exceptional user experiences.</p>
         </div>
         <div class="card glass p-6 rounded-lg shadow-md" data-aos="fade-up" data-aos-delay="300">
-          <img src="https://cdn-icons-png.flaticon.com/512/1833/18337835.png" alt="AI Model Creation" class="w-24 mx-auto mb-4">
+          <img src="codesoftixlogo/ai-technology.png" alt="AI Model Creation" class="w-24 mx-auto mb-4">
           <h3 class="text-xl font-semibold mb-3 text-center">AI Model Creation</h3>
           <p class="text-center text-sm">Design and train AI models for intelligent decision-making and automation.</p>
         </div>
         <div class="card glass p-6 rounded-lg shadow-md" data-aos="fade-up" data-aos-delay="400">
-          <img src="https://cdn-icons-png.flaticon.com/512/9187/9187650.png" alt="Data Science Development" class="w-24 mx-auto mb-4">
+          <img src="codesoftixlogo/data-science.png" alt="Data Science Development" class="w-24 mx-auto mb-4">
           <h3 class="text-xl font-semibold mb-3 text-center">Data Science Development</h3>
           <p class="text-center text-sm">Harness data to uncover insights and drive business intelligence.</p>
         </div>
@@ -291,58 +301,58 @@ Apply Now
       <h2 class="text-4xl font-bold text-center mb-12" data-aos="fade-up">Internship Opportunities</h2>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <div class="card glass p-6 rounded-lg shadow-md text-center" data-aos="fade-up" data-aos-delay="100">
-          <img src="https://cdn-icons-png.flaticon.com/512/9790/9790346.png" alt="Data Science" class="w-20 mx-auto mb-4">
+          <img src="codesoftixlogo/data-science.png" alt="Data Science" class="w-20 mx-auto mb-4">
           <h3 class="text-lg font-semibold mb-2">Data Science</h3>
           <p class="text-sm mb-4">Dive into data analysis and machine learning.</p>
-          <a href="#apply" class="inline-block text-white px-6 py-2 rounded-lg font-semibold cta-button">Apply</a>
+          <a href="https://forms.office.com/Pages/DesignPageV2.aspx?origin=NeoPortalPage&subpage=design&id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAAN__lyK2ZFUMzY5TllNODI2M0RDTkxHM1NOWTA2UTU5Qi4u&tab=0&analysis=false&topview=Preview" class="inline-block text-white px-6 py-2 rounded-lg font-semibold cta-button">Apply</a>
         </div>
         <div class="card glass p-6 rounded-lg shadow-md text-center" data-aos="fade-up" data-aos-delay="200">
-          <img src="https://cdn-icons-png.flaticon.com/512/1183/1183672.png" alt="Web Development" class="w-20 mx-auto mb-4">
+          <img src="codesoftixlogo/code.png" alt="Web Development" class="w-20 mx-auto mb-4">
           <h3 class="text-lg font-semibold mb-2">Web Development</h3>
           <p class="text-sm mb-4">Build modern web applications.</p>
-          <a href="#apply" class="inline-block text-white px-6 py-2 rounded-lg font-semibold cta-button">Apply</a>
+          <a href="https://forms.office.com/Pages/DesignPageV2.aspx?origin=NeoPortalPage&subpage=design&id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAAN__lyK2ZFUMzY5TllNODI2M0RDTkxHM1NOWTA2UTU5Qi4u&tab=0&analysis=false&topview=Preview" class="inline-block text-white px-6 py-2 rounded-lg font-semibold cta-button">Apply</a>
         </div>
         <div class="card glass p-6 rounded-lg shadow-md text-center" data-aos="fade-up" data-aos-delay="300">
-          <img src="https://cdn-icons-png.flaticon.com/512/6062/6062645.png" alt="Cyber Security" class="w-20 mx-auto mb-4">
+          <img src="codesoftixlogo/cyber-security.png" alt="Cyber Security" class="w-20 mx-auto mb-4">
           <h3 class="text-lg font-semibold mb-2">Cyber Security</h3>
           <p class="text-sm mb-4">Learn to protect digital assets.</p>
-          <a href="#apply" class="inline-block text-white px-6 py-2 rounded-lg font-semibold cta-button">Apply</a>
+          <a href="https://forms.office.com/Pages/DesignPageV2.aspx?origin=NeoPortalPage&subpage=design&id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAAN__lyK2ZFUMzY5TllNODI2M0RDTkxHM1NOWTA2UTU5Qi4u&tab=0&analysis=false&topview=Preview" class="inline-block text-white px-6 py-2 rounded-lg font-semibold cta-button">Apply</a>
         </div>
         <div class="card glass p-6 rounded-lg shadow-md text-center" data-aos="fade-up" data-aos-delay="400">
-          <img src="https://cdn-icons-png.flaticon.com/512/1055/1055687.png" alt="AI & ML" class="w-20 mx-auto mb-4">
+          <img src="codesoftixlogo/ai-technology.png" alt="AI & ML" class="w-20 mx-auto mb-4">
           <h3 class="text-lg font-semibold mb-2">AI & ML</h3>
           <p class="text-sm mb-4">Explore artificial intelligence.</p>
-          <a href="#apply" class="inline-block text-white px-6 py-2 rounded-lg font-semibold cta-button">Apply</a>
+          <a href="https://forms.office.com/Pages/DesignPageV2.aspx?origin=NeoPortalPage&subpage=design&id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAAN__lyK2ZFUMzY5TllNODI2M0RDTkxHM1NOWTA2UTU5Qi4u&tab=0&analysis=false&topview=Preview" class="inline-block text-white px-6 py-2 rounded-lg font-semibold cta-button">Apply</a>
         </div>
         <div class="card glass p-6 rounded-lg shadow-md text-center" data-aos="fade-up" data-aos-delay="500">
-          <img src="https://cdn-icons-png.flaticon.com/512/6096/6096936.png" alt="UI/UX Design" class="w-20 mx-auto mb-4">
+          <img src="codesoftixlogo/user-experience.png" alt="UI/UX Design" class="w-20 mx-auto mb-4">
           <h3 class="text-lg font-semibold mb-2">UI/UX Design</h3>
           <p class="text-sm mb-4">Design user-centric interfaces.</p>
-          <a href="#apply" class="inline-block text-white px-6 py-2 rounded-lg font-semibold cta-button">Apply</a>
+          <a href="https://forms.office.com/Pages/DesignPageV2.aspx?origin=NeoPortalPage&subpage=design&id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAAN__lyK2ZFUMzY5TllNODI2M0RDTkxHM1NOWTA2UTU5Qi4u&tab=0&analysis=false&topview=Preview" class="inline-block text-white px-6 py-2 rounded-lg font-semibold cta-button">Apply</a>
         </div>
         <div class="card glass p-6 rounded-lg shadow-md text-center" data-aos="fade-up" data-aos-delay="600">
-          <img src="https://cdn-icons-png.flaticon.com/512/1006/1006555.png" alt="Cloud Computing" class="w-20 mx-auto mb-4">
-          <h3 class="text-lg font-semibold mb-2">Cloud Computing</h3>
-          <p class="text-sm mb-4">Master cloud technologies.</p>
-          <a href="#apply" class="inline-block text-white px-6 py-2 rounded-lg font-semibold cta-button">Apply</a>
+          <img src="codesoftixlogo/java (1).png" alt="java" class="w-20 mx-auto mb-4">
+          <h3 class="text-lg font-semibold mb-2">Java</h3>
+          <p class="text-sm mb-4">Master the java programme.</p>
+          <a href="https://forms.office.com/Pages/DesignPageV2.aspx?origin=NeoPortalPage&subpage=design&id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAAN__lyK2ZFUMzY5TllNODI2M0RDTkxHM1NOWTA2UTU5Qi4u&tab=0&analysis=false&topview=Preview" class="inline-block text-white px-6 py-2 rounded-lg font-semibold cta-button">Apply</a>
         </div>
         <div class="card glass p-6 rounded-lg shadow-md text-center" data-aos="fade-up" data-aos-delay="700">
-          <img src="https://cdn-icons-png.flaticon.com/512/2920/2920322.png" alt="Digital Marketing" class="w-20 mx-auto mb-4">
-          <h3 class="text-lg font-semibold mb-2">Digital Marketing</h3>
-          <p class="text-sm mb-4">Strategies for online growth.</p>
-          <a href="#apply" class="inline-block text-white px-6 py-2 rounded-lg font-semibold cta-button">Apply</a>
+          <img src="codesoftixlogo/python (1).png" alt="Python" class="w-20 mx-auto mb-4">
+          <h3 class="text-lg font-semibold mb-2">Python</h3>
+          <p class="text-sm mb-4">Explor the python experiences.</p>
+          <a href="https://forms.office.com/Pages/DesignPageV2.aspx?origin=NeoPortalPage&subpage=design&id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAAN__lyK2ZFUMzY5TllNODI2M0RDTkxHM1NOWTA2UTU5Qi4u&tab=0&analysis=false&topview=Preview" class="inline-block text-white px-6 py-2 rounded-lg font-semibold cta-button">Apply</a>
         </div>
         <div class="card glass p-6 rounded-lg shadow-md text-center" data-aos="fade-up" data-aos-delay="800">
-          <img src="https://cdn-icons-png.flaticon.com/512/3616/3616013.png" alt="Blockchain" class="w-20 mx-auto mb-4">
-          <h3 class="text-lg font-semibold mb-2">Blockchain</h3>
-          <p class="text-sm mb-4">Develop decentralized solutions.</p>
-          <a href="#apply" class="inline-block text-white px-6 py-2 rounded-lg font-semibold cta-button">Apply</a>
+          <img src="codesoftixlogo/c- (1).png" alt="C++" class="w-20 mx-auto mb-4">
+          <h3 class="text-lg font-semibold mb-2">C++</h3>
+          <p class="text-sm mb-4">Develop a system software, game development,.</p>
+          <a href="https://forms.office.com/Pages/DesignPageV2.aspx?origin=NeoPortalPage&subpage=design&id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAAN__lyK2ZFUMzY5TllNODI2M0RDTkxHM1NOWTA2UTU5Qi4u&tab=0&analysis=false&topview=Preview" class="inline-block text-white px-6 py-2 rounded-lg font-semibold cta-button">Apply</a>
         </div>
         <div class="card glass p-6 rounded-lg shadow-md text-center" data-aos="fade-up" data-aos-delay="900">
-          <img src="https://cdn-icons-png.flaticon.com/512/1161/1161388.png" alt="Product Management" class="w-20 mx-auto mb-4">
-          <h3 class="text-lg font-semibold mb-2">Product Management</h3>
-          <p class="text-sm mb-4">Lead product development cycles.</p>
-          <a href="#apply" class="inline-block text-white px-6 py-2 rounded-lg font-semibold cta-button">Apply</a>
+          <img src="codesoftixlogo/mobile-app.png" alt="App development" class="w-20 mx-auto mb-4">
+          <h3 class="text-lg font-semibold mb-2">App Development</h3>
+          <p class="text-sm mb-4">App development is the process of creating software applications for mobile devices.</p>
+          <a href="https://forms.office.com/Pages/DesignPageV2.aspx?origin=NeoPortalPage&subpage=design&id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAAN__lyK2ZFUMzY5TllNODI2M0RDTkxHM1NOWTA2UTU5Qi4u&tab=0&analysis=false&topview=Preview" class="inline-block text-white px-6 py-2 rounded-lg font-semibold cta-button">Apply</a>
         </div>
       </div>
     </div>
@@ -357,22 +367,24 @@ Apply Now
       <h2 class="text-4xl font-bold text-center mb-12" data-aos="fade-up">Frequently Asked Questions</h2>
       <div class="space-y-4">
         <details class="glass p-5 rounded-lg shadow-md" data-aos="fade-up" data-aos-delay="100">
-          <summary class="font-semibold text-lg"><i class="fas fa-question-circle mr-2 text-purple-300"></i>Is this internship free?</summary>
-          <p class="mt-3 text-white/90">Yes, our virtual internships are free, with optional paid add-ons for certificate verification and 1:1 mentorship.</p>
+          <summary class="font-semibold text-lg"><i class="fas fa-question-circle mr-2 text-purple-300"></i>Why is CodeSoftix Technology a great place to start or build my career ?</summary>
+          <p class="mt-3 text-white/90">Your first role here is just that—your first. Our global reach, multi-industry, multi-function depth, and commitment to innovation means there are endless opportunities for you to learn and grow alongside us. We offer all of our people continuous learning and training so that as technology changes, your skills stay relevant. We're also globally recognized as a great place to work and regularly awarded for our commitments and actions to create a culture of equality, and advance sustainability and ethical business practices.</p>
         </details>
         <details class="glass p-5 rounded-lg shadow-md" data-aos="fade-up" data-aos-delay="200">
-          <summary class="font-semibold text-lg"><i class="fas fa-question-circle mr-2 text-purple-300"></i>How to apply?</summary>
-          <p class="mt-3 text-white/90">Select a domain and fill out the application form. We'll review and send a confirmation with next steps.</p>
+          <summary class="font-semibold text-lg"><i class="fas fa-question-circle mr-2 text-purple-300"></i>What is a typical workday like ?</summary>
+          <p class="mt-3 text-white/90">Your days will vary a lot based on the work you do. You can expect to work with an innovative, forward-looking team to help create positive change for our stakeholders.</p>
         </details>
         <details class="glass p-5 rounded-lg shadow-md" data-aos="fade-up" data-aos-delay="300">
-          <summary class="font-semibold text-lg"><i class="fas fa-question-circle mr-2 text-purple-300"></i>Program duration?</summary>
-          <p class="mt-3 text-white/90">Typically one month with bootcamp-style sprints and a final project presentation.</p>
+          <summary class="font-semibold text-lg"><i class="fas fa-question-circle mr-2 text-purple-300"></i>What is the work environment like ?</summary>
+          <p class="mt-3 text-white/90">We work hard for our clients and for each other. And we also work with support, getting the chance to learn from some of the smartest, most generous people around the world. And whether working virtually or onsite, our multi-functional spaces support innovation, creativity, learning and teamwork.</p>
         </details>
       </div>
     </div>
   </section>
 
   <!-- APPLY -->
+
+  <!-- 
   <section id="apply" class="py-20">
     <div class="section-bg"></div>
     <div class="blob"></div>
@@ -420,17 +432,110 @@ Apply Now
     </div>
   </section>
 
-  <!-- FOOTER -->
-  <footer class="text-white py-8" style="background:linear-gradient(to right,#1f2937,var(--accent-1));">
-    <div class="max-w-7xl mx-auto px-4 text-center">
-      <p>Made with ❤️ by CodeSoftix</p>
-      <p>© 2025 CodeSoftix. All rights reserved.</p>
-      <div class="mt-4 space-x-4">
-        <a href="#" class="hover:text-purple-300">Privacy</a>
-        <a href="#" class="hover:text-purple-300">Terms</a>
+-->
+
+<!-- Footer -->
+<footer class="text-white py-8" style="background:linear-gradient(to right,#1f2937,var(--accent-1));">
+  <div class="max-w-7xl mx-auto px-4 text-center">
+
+    <!-- Footer Text -->
+    <p>Made with by CodeSoftix Technology</p>
+    <p>© 2025 CodeSoftix Technology. All rights reserved.</p>
+
+    <!-- Links -->
+    <div class="mt-4 space-x-4">
+      <a href="http://127.0.0.1:5500/CodeSoftiix_Adevance/privacy.html" class="hover:text-purple-300">Privacy</a>
+      <a href="http://127.0.0.1:5500/CodeSoftiix_Adevance/term.html" class="hover:text-purple-300">Terms</a>
+    </div>
+
+    <!-- Social Media Section -->
+    <div class="mt-6">
+      <p class="mb-2 text-lg font-semibold">Follow Us</p>
+      <div class="flex justify-center space-x-6">
+        <!-- Instagram -->
+        <a href="https://instagram.com/" target="_blank" class="hover:text-pink-400">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-6 h-6" viewBox="0 0 24 24">
+            <path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5a4.25 4.25 0 0 0 4.25-4.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 1.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7zm5.25-2.25a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+          </svg>
+        </a>
+        <!-- LinkedIn -->
+        <a href="https://linkedin.com/" target="_blank" class="hover:text-blue-400">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-6 h-6" viewBox="0 0 24 24">
+            <path d="M6.94 6.94a1.5 1.5 0 1 1-2.12-2.12 1.5 1.5 0 0 1 2.12 2.12zM4.5 9h3v12h-3V9zm5.5 0h2.8v1.65h.04c.39-.73 1.36-1.5 2.8-1.5 3 0 3.56 1.97 3.56 4.53V21h-3v-5.56c0-1.33-.02-3.05-1.86-3.05-1.86 0-2.14 1.45-2.14 2.95V21h-3V9z"/>
+          </svg>
+        </a>
+        <!-- Facebook -->
+        <a href="https://facebook.com/" target="_blank" class="hover:text-blue-500">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-6 h-6" viewBox="0 0 24 24">
+            <path d="M22 12.07C22 6.48 17.52 2 11.93 2 6.48 2 2 6.48 2 12.07c0 5.02 3.66 9.19 8.44 9.93v-7.03H8.07v-2.9h2.37V9.41c0-2.35 1.4-3.65 3.54-3.65 1.02 0 2.09.18 2.09.18v2.3h-1.18c-1.16 0-1.52.72-1.52 1.45v1.74h2.58l-.41 2.9h-2.17v7.03C18.34 21.26 22 17.09 22 12.07z"/>
+          </svg>
+        </a>
+        <!-- WhatsApp -->
+        <a href="https://wa.me/919876543210" target="_blank" class="hover:text-green-400">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-6 h-6" viewBox="0 0 24 24">
+            <path d="M12 2C6.48 2 2 6.25 2 11.5c0 2.07.7 3.98 1.89 5.53L2 22l5.19-1.65A10.4 10.4 0 0 0 12 21c5.52 0 10-4.25 10-9.5S17.52 2 12 2zm0 17.5c-1.7 0-3.34-.5-4.73-1.44l-.34-.22-3.08.98.98-3.01-.22-.35A7.47 7.47 0 0 1 4.5 11.5C4.5 7.36 8.06 4 12 4s7.5 3.36 7.5 7.5-3.56 7.5-7.5 7.5zm3.9-5.53c-.21-.1-1.26-.62-1.45-.69-.19-.07-.33-.1-.47.1-.14.21-.54.69-.66.83-.12.14-.24.16-.45.05-.21-.1-.9-.33-1.71-1.05-.63-.56-1.05-1.24-1.17-1.45-.12-.21-.01-.32.09-.42.09-.09.21-.24.31-.36.1-.12.14-.21.21-.35.07-.14.03-.26-.01-.36-.05-.1-.47-1.13-.64-1.54-.17-.41-.34-.35-.47-.36-.12 0-.26-.01-.4-.01-.14 0-.36.05-.55.26-.19.21-.72.7-.72 1.71 0 1.01.74 1.98.85 2.12.1.14 1.45 2.23 3.52 3.13.49.21.87.34 1.17.44.49.16.94.14 1.29.09.39-.06 1.26-.51 1.44-1 .18-.49.18-.91.13-1-.05-.09-.19-.14-.4-.24z"/>
+          </svg>
+        </a>
       </div>
     </div>
-  </footer>
+
+  </div>
+</footer>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   <!-- Scripts: AOS, mobile menu, particle canvas, simple form handling -->
   <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
